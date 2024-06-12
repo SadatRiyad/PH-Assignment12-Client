@@ -1,0 +1,50 @@
+.swiper {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .swiper-pagination-bullet{
+    background-color: #ec7210;
+    width: 12px;
+    height: 12px;
+    border: 1.1px solid black;
+  }
+
+  .a1{
+    background-image: url('https://static.vecteezy.com/system/resources/thumbnails/001/226/221/small/abstract-orange-polygonal-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .a2{
+    background-image: url('https://www.shutterstock.com/image-vector/group-raised-hands-diverse-people-600nw-2221158931.jpg');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+  }
+  .a3{
+    background-image: url('https://static.vecteezy.com/system/resources/previews/011/875/478/non_2x/meet-of-team-of-people-for-talk-dialog-communication-discussion-business-relationship-discuss-problems-together-exchange-opinions-of-team-worker-support-group-illustration-vector.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .swiper-button-next, .swiper-button-prev{
+    color: #ec7210;
+    font-weight: bold;
+  }
