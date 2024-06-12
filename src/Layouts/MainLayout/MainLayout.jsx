@@ -1,11 +1,11 @@
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import Navbar from "../Shered/Navbar/Navbar";
-import Footer from "../Shered/Footer/Footer";
+import Navbar from "@/components/Shered/Navbar/Navbar";
+import Footer from "@/components/Shered/Footer/Footer";
 
 
-const Root = () => {
+const MainLayout = () => {
     return (
         <>
             <ScrollRestoration />
@@ -17,4 +17,4 @@ const Root = () => {
     );
 };
 
-export default Root;
+export default MainLayout;

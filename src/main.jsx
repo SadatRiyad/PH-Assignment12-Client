@@ -2,37 +2,21 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { HelmetProvider } from 'react-helmet-async'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-
+import { RouterProvider } from 'react-router-dom'
+import { router } from './Routes/Routes'
 // AOS
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Root from './components/Root/Root'
-import ErrorPage from './components/Shered/ErrorPage/ErrorPage'
-import Home from './components/Home/Home'
+import AuthProvider from './components/ContextAPI/AuthProvider/AuthProvider'
 AOS.init();
 
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root></Root>,
-    errorElement: <ErrorPage></ErrorPage>,
-    children: [
-      {
-        path: "/",
-        element: <Home></Home>,
-        loader: () => fetch(`${import.meta.env.VITE_API_URL}/biodatas`),
-      },
-      
-    ],
-  },
-]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
+      <AuthProvider>
         <RouterProvider router={router} />
+      </AuthProvider>
     </HelmetProvider>
   </React.StrictMode>,
 )
