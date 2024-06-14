@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import logo from "../../../assets/logo.png";
+import logo from "../../../assets/footerLogo-removebg-preview.png";
 import "./Navbar.css";
 import useAuth from "../../Hooks/useAuth/useAuth";
 import { CircleUser, Menu } from "lucide-react";
@@ -18,23 +18,23 @@ const Navbar = () => {
 
     const Links = (
         <>
-            <NavLink to="/" className="hover:text-customRed text-base font-medium focus:text-customRed hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">Home</NavLink>
-            <NavLink to="/biodatas" className="hover:text-customRed text-base font-medium focus:text-customRed hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">Biodatas</NavLink>
-            <NavLink to="/aboutUs" className="hover:text-customRed text-base font-medium focus:text-customRed hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">About Us</NavLink>
-            <NavLink to="/contactUs" className="hover:text-customRed text-base font-medium focus:text-customRed hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">Contact Us</NavLink>
-            {user && <NavLink to="/dashboard" className="hover:text-customRed text-base font-medium focus:text-customRed hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">Dashboard</NavLink>}
+            <NavLink to="/" className="hover:text-customBlue text-white font-medium focus:text-customBlue hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">Home</NavLink>
+            <NavLink to="/biodatas" className="hover:text-customBlue text-white font-medium focus:text-customBlue hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">Biodatas</NavLink>
+            <NavLink to="/aboutUs" className="hover:text-customBlue text-white font-medium focus:text-customBlue hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">About Us</NavLink>
+            <NavLink to="/contactUs" className="hover:text-customBlue text-white font-medium focus:text-customBlue hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">Contact Us</NavLink>
+            {user && <NavLink to="/dashboard" className="hover:text-customBlue text-white font-medium focus:text-customBlue hover:bg-transparent transition-colors duration-75 mr-[1px] mb-[3px]">Dashboard</NavLink>}
         </>
     );
 
     return (
-        <header className="sticky flex justify-evenly w-full z-10 top-0 h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+        <header className="sticky bg-customGulabi flex justify-evenly w-full z-10 top-0 h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
             <div>
                 <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                     <Link
                         to="/"
                         className="flex w-2/4 items-center gap-2 text-lg font-semibold md:text-base"
                     >
-                        <img src={logo} alt="Logo" className="w-[65%]" />
+                        <img src={logo} alt="Logo" className="w-[50%]" />
                     </Link>
                     <div className="flex justify-evenly w-full">
                         {Links}
@@ -53,7 +53,7 @@ const Navbar = () => {
                             <span className="sr-only">Toggle menu</span>
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left">
+                    <SheetContent side="left" className="bg-customGulabi">
                         <nav className="grid gap-6 text-lg font-medium">
                             <Link
                                 to="/"
@@ -73,7 +73,7 @@ const Navbar = () => {
                             <Button variant="secondary" size="icon" className="rounded-full">
                                 <CircleUser className="h-5 w-5" />
                                 <span className="sr-only">Toggle menu</span>
-                                <Avatar className="w-15 rounded-full bg-customRed p-[2px]">
+                                <Avatar className="w-15 rounded-full bg-customBlue p-[2px]">
                                     <AvatarImage className="rounded-full" src={user.photoURL ? user.photoURL : "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
                                     <AvatarFallback>{user?.displayName}</AvatarFallback>
                                 </Avatar>
@@ -86,7 +86,7 @@ const Navbar = () => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 ) : (
-                    <NavLink to="/login" className="btn mx-2 px-5 py-3 justify-center items-center bg-customRed hover:bg-transparent border-customRed text-white hover:text-customRed rounded border hover:border-customRed transition-all duration-200">Login</NavLink>
+                    <NavLink to="/login" className="btn mx-2 px-5 py-3 justify-center items-center bg-customBlue hover:bg-transparent border-customBlue text-white hover:text-customBlue rounded border hover:border-customBlue transition-all duration-200">Login</NavLink>
                 )}
             </div>
         </header>

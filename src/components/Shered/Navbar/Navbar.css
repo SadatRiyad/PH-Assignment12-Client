@@ -1,15 +1,15 @@
 a.active{
     background-color: transparent !important;
     border: 1px solid transparent !important;
-    border-bottom: 1px solid #eb001b !important;
+    border-bottom: 1.5px solid #1c085d !important;
     border-top: 1px solid transparent !important;
-    color: #eb001b !important;
+    color: #1c085d !important;
 }
 a.focus{
     background-color: transparent !important;
     border: 1px solid transparent !important;
 }
 .btn.active{
-    border-top: 1px solid #eb001b !important;
-    border-inline: 1px solid #eb001b !important;
+    border-top: 1px solid #1c085d !important;
+    border-inline: 1px solid #1c085d !important;
 }

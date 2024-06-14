@@ -19,7 +19,7 @@
     object-fit: cover;
   }
   .swiper-pagination-bullet{
-    background-color: #ec7210;
+    background-color: #E33183;
     width: 12px;
     height: 12px;
     border: 1.1px solid black;
@@ -45,6 +45,11 @@
   }
 
   .swiper-button-next, .swiper-button-prev{
-    color: #ec7210;
+    color: #E33183;
     font-weight: bold;
+  }
+
+  .sc{
+    transition-duration: 0.05s !important;
+    z-index: 9999 !important;
   }
