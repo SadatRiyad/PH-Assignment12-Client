@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Helmet } from "react-helmet-async";
 import useAuth from "../Hooks/useAuth/useAuth";
-import axios from "axios";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -20,8 +19,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { FcGoogle } from "react-icons/fc";
+import useAxiosPublic from "../Hooks/useAxiosPublic/useAxiosPublix";
 
 const Register = () => {
+    const axiosPublic = useAxiosPublic();
     const { registerUser, updateUserProfile, setRender, render, setUser, user, handleSignInWithGoogle } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -43,20 +44,10 @@ const Register = () => {
     const SignInWithGoogle = () => {
         handleSignInWithGoogle()
             .then(() => {
-                // get access token
-                axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: "googleUser" }, {
-                    withCredentials: true,
-                })
-                    .then((res) => {
-                        const token = res.data.token;
-                        console.log(token)
-                        if (res.data.success) {
-                            toast("Google Login Successfully!", { type: "success", autoClose: 2000 });
-                            setTimeout(() => {
-                                navigate(redirect);
-                            }, 3000)
-                        }
-                    })
+                toast("Google Login Successfully!", { type: "success", autoClose: 2000 });
+                setTimeout(() => {
+                    navigate(redirect);
+                }, 3000)
             })
             .catch(() => {
                 toast("Invalid login credentials.", { type: "error", autoClose: 2000 })
@@ -68,26 +59,32 @@ const Register = () => {
         const { name, email, photoURL, password } = data;
 
         registerUser(email, password)
-            .then(() => {
+            .then(result => {
+                const loggedUser = result.user;
+                console.log(loggedUser);
                 updateUserProfile(name, photoURL)
-                const userToken = { email };
-                // get access token
-                axios.post(`${import.meta.env.VITE_API_URL}/jwt`, userToken, {
-                    withCredentials: true,
-                })
-                    .then((res) => {
-                        // const token = res.data.token;
-                        // console.log(token)
-                        if (res.data.success) {
-                            setRender(!render);
-                            setUser({ ...user, displayName: name, photoURL: photoURL })
-                            toast("Register Successfully!", { type: "success", autoClose: 2000 });
-                            setTimeout(() => {
-                                navigate(redirect);
-                            }, 3000)
+                    .then(() => {
+                        // create user entry in the database
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
                         }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    setRender(!render);
+                                    setUser({ ...user, displayName: name, photoURL: photoURL })
+                                    reset();
+                                    toast("Register Successfully!", { type: "success", autoClose: 2000 });
+                                    setTimeout(() => {
+                                        navigate(redirect);
+                                    }, 3000)
+                                }
+                            })
                     })
-            }).catch(() => {
+                    .catch(error => console.log(error))
+            })
+            .catch(() => {
                 toast.error('Email already in use, please try another email', { autoClose: 2000 });
                 reset();
             });
@@ -174,7 +171,7 @@ const Register = () => {
                                 />
                                 {errors?.email && <span className="text-customRed text-sm mt-1 items-center flex"><BsInfoCircle className="mr-1 font-bold" />{errors?.email?.message}</span>}
                             </div>
-                           
+
                             <div className="grid gap-2 form-control mb-2 mt-4">
                                 <Label htmlFor="photoURL">Photo URL</Label>
                                 <Input   {...register("photoURL", {

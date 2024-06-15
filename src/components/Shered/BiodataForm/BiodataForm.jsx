@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import axios from "axios";
 import {
     Card,
     CardContent,
@@ -15,15 +14,19 @@ import { Helmet } from "react-helmet-async";
 import useAuth from "@/components/Hooks/useAuth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import useAxiosSecure from "@/components/Hooks/useAxiosSecure/useAxiosSecure";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const BiodataForm = () => {
+    const axiosSecure = useAxiosSecure();
     const { user, data } = useAuth();
     const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
     const [isEditMode, setIsEditMode] = useState(false);
     const [biodata, setBiodata] = useState(null);
-    console.log(biodata);
     const prevBiodataID = data.length;
-    const biodataID = prevBiodataID + 1;
+    const newBiodataID = prevBiodataID + 1;
+    const biodataID = "BiodataID-" + newBiodataID;
 
     const [selectValues, setSelectValues] = useState({
         biodataType: '',
@@ -37,19 +40,18 @@ const BiodataForm = () => {
         expectedPartnerWeight: '',
     });
 
-    useEffect(() => {
-        axios.get(`${import.meta.env.VITE_API_URL}/biodata/${user.email}`, {
-            withCredentials: true,
-        }).then(response => {
-            if (response.data) {
-                setBiodata(response.data);
+    // using tanstack and axiosSecure without useEffect
+    const { data: myBiodata = [], isPending: loading, refetch } = useQuery({
+        queryKey: ['myBiodata'],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/biodata/${user.email}`)
+            if (res.data.length > 0) {
+                setBiodata(res.data[0]);
                 setIsEditMode(true);
-                console.log(isEditMode)
             }
-        }).catch(error => {
-            console.error("Failed to fetch biodata:", error);
-        });
-    }, [isEditMode, user.email]);
+            return [myBiodata, loading, refetch]
+        },
+    });
 
     const handleSelectChange = (name, value) => {
         setValue(name, value);
@@ -62,19 +64,23 @@ const BiodataForm = () => {
         axios({
             method,
             url,
-            data: { ...data, email: user.email, biodataID },
+            data: isEditMode ? { ...data, email: user.email } : { ...data, email: user.email, biodataID },
             withCredentials: true,
         }).then((response) => {
             if (response.data.acknowledged == true) {
                 toast("Biodata saved successfully!", { type: "success", autoClose: 2000 });
                 reset();
+                refetch();
             }
         }).catch((error) => {
             console.log(error)
             toast("Failed to save biodata. Please try again.", { type: "error", autoClose: 2000 });
         });
     };
-
+    if (loading) {
+        return <div className="flex text-center items-center justify-center h-dvh w-dvw">Loading...</div>
+    }
+    // console.log(biodata.biodataType)
 
     return (
         <div className="p-8 md:px-20 min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500">
@@ -91,7 +97,7 @@ const BiodataForm = () => {
                             <Label htmlFor="biodataType">Biodata Type</Label>
                             <Select id="biodataType" {...register("biodataType", { required: "Biodata Type is required" })} value={selectValues.biodataType} onValueChange={(value) => handleSelectChange('biodataType', value)}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.biodataType}` : "Select Biodata Type"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Male">Male</SelectItem>
@@ -103,19 +109,19 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="name">Name</Label>
-                            <Input id="name" {...register("name", { required: "Name is required" })} placeholder="Your Name" />
+                            <Input id="name" defaultValue={isEditMode ? `${biodata?.name}` : ''} {...register("name", { required: "Name is required" })} placeholder="Your Name" />
                             {errors.name && <span className="text-customRed text-sm mt-1">{errors.name.message}</span>}
                         </div>
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="profileImage">Profile Image Link</Label>
-                            <Input id="profileImage" {...register("profileImage", { required: "Profile Image Link is required" })} placeholder="http://example.com/image.jpg" />
+                            <Input defaultValue={isEditMode ? `${biodata?.profileImage}` : ''} id="profileImage" {...register("profileImage", { required: "Profile Image Link is required" })} placeholder="http://example.com/image.jpg" />
                             {errors.profileImage && <span className="text-customRed text-sm mt-1">{errors.profileImage.message}</span>}
                         </div>
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="dob">Date of Birth</Label>
-                            <Input id="dob" type="date" {...register("dob", { required: "Date of Birth is required" })} />
+                            <Input defaultValue={isEditMode ? `${biodata?.dob}` : ''} id="dob" type="date" {...register("dob", { required: "Date of Birth is required" })} />
                             {errors.dob && <span className="text-customRed text-sm mt-1">{errors.dob.message}</span>}
                         </div>
 
@@ -123,7 +129,7 @@ const BiodataForm = () => {
                             <Label htmlFor="height">Height</Label>
                             <Select id="height" value={selectValues.height} onValueChange={(value) => handleSelectChange('height', value)} {...register("height", { required: "Height is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.height}` : "Select Height"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Short">Short</SelectItem>
@@ -138,7 +144,8 @@ const BiodataForm = () => {
                             <Label htmlFor="weight">Weight</Label>
                             <Select id="weight" value={selectValues.weight} onValueChange={(value) => handleSelectChange('weight', value)} {...register("weight", { required: "Weight is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.weight}` : "Select Weight"} />
+
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Light">Light</SelectItem>
@@ -151,7 +158,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="age">Age</Label>
-                            <Input id="age" type="number" {...register("age", { required: "Age is required" })} placeholder="Your Age" />
+                            <Input defaultValue={isEditMode ? `${biodata?.age}` : ''} id="age" type="number" {...register("age", { required: "Age is required" })} placeholder="Your Age" />
                             {errors.age && <span className="text-customRed text-sm mt-1">{errors.age.message}</span>}
                         </div>
 
@@ -159,7 +166,7 @@ const BiodataForm = () => {
                             <Label htmlFor="occupation">Occupation</Label>
                             <Select id="occupation" value={selectValues.occupation} onValueChange={(value) => handleSelectChange('occupation', value)} {...register("occupation", { required: "Occupation is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.occupation}` : "Select Occupation"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Student">Student</SelectItem>
@@ -174,7 +181,8 @@ const BiodataForm = () => {
                             <Label htmlFor="race">Race</Label>
                             <Select id="race" value={selectValues.race} onValueChange={(value) => handleSelectChange('race', value)} {...register("race", { required: "Race is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.race}` : "Select Race"} />
+
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Asian">Asian</SelectItem>
@@ -187,19 +195,19 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="fathersName">Father Name</Label>
-                            <Input id="fathersName" {...register("fathersName")} placeholder="Father's Name" />
+                            <Input defaultValue={isEditMode ? `${biodata?.fathersName}` : ''} id="fathersName" {...register("fathersName")} placeholder="Father's Name" />
                         </div>
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="mothersName">Mother Name</Label>
-                            <Input id="mothersName" {...register("mothersName")} placeholder="Mother's Name" />
+                            <Input defaultValue={isEditMode ? `${biodata?.mothersName}` : ''} id="mothersName" {...register("mothersName")} placeholder="Mother's Name" />
                         </div>
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="permanentDivision">Permanent Division</Label>
                             <Select id="permanentDivision" value={selectValues.permanentDivision} onValueChange={(value) => handleSelectChange('permanentDivision', value)} {...register("permanentDivision", { required: "Permanent Division is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.permanentDivision}` : "Select Permanent Division"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Dhaka">Dhaka</SelectItem>
@@ -207,7 +215,7 @@ const BiodataForm = () => {
                                     <SelectItem value="Rangpur">Rangpur</SelectItem>
                                     <SelectItem value="Barisal">Barisal</SelectItem>
                                     <SelectItem value="Khulna">Khulna</SelectItem>
-                                    <SelectItem value="Maymansign">Maymansign</SelectItem>
+                                    <SelectItem value="Mymensingh">Mymensingh</SelectItem>
                                     <SelectItem value="Sylhet">Sylhet</SelectItem>
                                 </SelectContent>
                             </Select>
@@ -218,7 +226,7 @@ const BiodataForm = () => {
                             <Label htmlFor="presentDivision">Present Division</Label>
                             <Select id="presentDivision" value={selectValues.presentDivision} onValueChange={(value) => handleSelectChange('presentDivision', value)} {...register("presentDivision", { required: "Present Division is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata.presentDivision}` : "Select Present Division"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Dhaka">Dhaka</SelectItem>
@@ -226,7 +234,7 @@ const BiodataForm = () => {
                                     <SelectItem value="Rangpur">Rangpur</SelectItem>
                                     <SelectItem value="Barisal">Barisal</SelectItem>
                                     <SelectItem value="Khulna">Khulna</SelectItem>
-                                    <SelectItem value="Maymansign">Maymansign</SelectItem>
+                                    <SelectItem value="Mymensingh">Mymensingh</SelectItem>
                                     <SelectItem value="Sylhet">Sylhet</SelectItem>
                                 </SelectContent>
                             </Select>
@@ -235,14 +243,14 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="expectedPartnerAge">Expected Partner Age</Label>
-                            <Input id="expectedPartnerAge" type="number" {...register("expectedPartnerAge")} placeholder="Expected Partner Age" />
+                            <Input defaultValue={isEditMode ? `${biodata?.expectedPartnerAge}` : ''} id="expectedPartnerAge" type="number" {...register("expectedPartnerAge")} placeholder="Expected Partner Age" />
                         </div>
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="expectedPartnerHeight">Expected Partner Height</Label>
                             <Select id="expectedPartnerHeight" value={selectValues.expectedPartnerHeight} onValueChange={(value) => handleSelectChange('expectedPartnerHeight', value)} {...register("expectedPartnerHeight", { required: "Expected Partner Height is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.expectedPartnerHeight}` : "Select Expected Partner Height"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Short">Short</SelectItem>
@@ -257,7 +265,7 @@ const BiodataForm = () => {
                             <Label htmlFor="expectedPartnerWeight">Expected Partner Weight</Label>
                             <Select id="expectedPartnerWeight" value={selectValues.expectedPartnerWeight} onValueChange={(value) => handleSelectChange('expectedPartnerWeight', value)} {...register("expectedPartnerWeight", { required: "Expected Partner Weight is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select" />
+                                    <SelectValue placeholder={isEditMode ? `${biodata.expectedPartnerWeight}` : "Select Expected Partner Weight"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Light">Light</SelectItem>
@@ -270,17 +278,17 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="email">Contact Email</Label>
-                            <Input id="email" type="email" value={user.email} readOnly />
+                            <Input defaultValue={isEditMode ? `${biodata?.email}` : ''} id="email" type="email" value={user.email} readOnly />
                         </div>
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="mobile">Mobile Number</Label>
-                            <Input id="mobile" {...register("mobile", { required: "Mobile Number is required" })} placeholder="Mobile Number" />
+                            <Input defaultValue={isEditMode ? `${biodata.mobile}` : ''} id="mobile" {...register("mobile", { required: "Mobile Number is required" })} placeholder="Mobile Number" />
                             {errors.mobile && <span className="text-customRed text-sm mt-1">{errors.mobile.message}</span>}
                         </div>
 
                         <Button type="submit" className="w-full form-control mt-6 bg-customBlue hover:bg-customRed">
-                            Save And Publish Now
+                            {isEditMode ? "Update Now" : "Submit Now"}
                         </Button>
                     </form>
                 </CardContent>

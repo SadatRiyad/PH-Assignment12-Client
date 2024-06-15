@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
@@ -34,7 +33,12 @@ const AuthProvider = ({ children }) => {
             await signInWithPopup(auth, googleProvider)
                 .then((result) => {
                     const user = result.user;
+                    const userInfo = {
+                        name: result.user?.displayName,
+                        email: result.user?.email,
+                    }
                     setUser(user);
+                    axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
                 });
         } catch (error) {
             console.log(error.message);
@@ -90,22 +94,25 @@ const AuthProvider = ({ children }) => {
             const userEmail = currentUser?.email || user?.email;
             const loggedUser = { email: userEmail };
             setUser(currentUser);
-            setLoading(false);
             // if user exist then issue a token
             if (currentUser) {
                 axios.post(`${import.meta.env.VITE_API_URL}/jwt`, loggedUser, { withCredentials: true })
-                // .then(response => {
-                //     console.log(response.data);
-                // })
+                    .then(res => {
+                        const token = res.data.token;
+                        if (token) {
+                            localStorage.setItem('access-token', token);
+                            setLoading(false);
+                            console.log(loading)
+                        }
+                    })
             } else {
                 axios.post(`${import.meta.env.VITE_API_URL}/logout`, loggedUser, { withCredentials: true })
-                // .then(response => {
-                //     console.log(response.data);
-                // })
+                localStorage.removeItem('access-token');
+                setLoading(false);
             }
         });
         return () => unSubscribe();
-    }, [render, auth, user?.email]);
+    }, [render, auth, user?.email, loading]);
 
     // useEffet for loading api
     useEffect(() => {

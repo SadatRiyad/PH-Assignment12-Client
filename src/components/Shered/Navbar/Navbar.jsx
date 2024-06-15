@@ -11,7 +11,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const Navbar = () => {
     const { user, logoutUser } = useAuth();
-
     const handleLogout = () => {
         logoutUser();
     };
@@ -73,9 +72,9 @@ const Navbar = () => {
                             <Button variant="secondary" size="icon" className="rounded-full">
                                 <CircleUser className="h-5 w-5" />
                                 <span className="sr-only">Toggle menu</span>
-                                <Avatar className="w-15 rounded-full bg-customBlue p-[2px]">
-                                    <AvatarImage className="rounded-full" src={user.photoURL ? user.photoURL : "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
-                                    <AvatarFallback>{user?.displayName}</AvatarFallback>
+                                <Avatar className="w-15 rounded-full p-[2px]">
+                                    <AvatarImage className="rounded-full" src={user?.photoURL} />
+                                    <AvatarFallback></AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>

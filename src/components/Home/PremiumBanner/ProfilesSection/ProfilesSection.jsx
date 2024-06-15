@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import {
@@ -28,7 +29,7 @@ const ProfilesSection = () => {
             return sortOrder === 'ascending' ? a.age - b.age : b.age - a.age;
         });
         setProfiles(sortedProfiles);
-    }, [sortOrder]);
+    }, [profileData, sortOrder]);
 
     return (
         <div className="container mx-auto py-6 bg-slate-200 pb-10">

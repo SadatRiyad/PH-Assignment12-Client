@@ -8,7 +8,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from "react-helmet-async";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import axios from "axios";
 import useAuth from "../Hooks/useAuth/useAuth";
 
 import { Button } from "@/components/ui/button"
@@ -46,20 +45,10 @@ const Login = () => {
     const SignInWithGoogle = () => {
         handleSignInWithGoogle()
             .then(() => {
-                // get access token
-                axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: "googleUser" }, {
-                    withCredentials: true,
-                })
-                    .then((res) => {
-                        const token = res.data.token;
-                        console.log(token)
-                        if (res.data.success) {
-                            toast("Google Login Successfully!", { type: "success", autoClose: 2000 });
-                            setTimeout(() => {
-                                navigate(redirect);
-                            }, 3000)
-                        }
-                    })
+                toast("Google Login Successfully!", { type: "success", autoClose: 2000 });
+                setTimeout(() => {
+                    navigate(redirect);
+                }, 3000)
             })
             .catch(() => {
                 toast("Invalid login credentials.", { type: "error", autoClose: 2000 })
@@ -71,23 +60,11 @@ const Login = () => {
         // console.log(data);
         const { email, password } = data;
         loginUser(email, password)
-
             .then(() => {
-                const user = { email };
-                // get access token
-                axios.post(`${import.meta.env.VITE_API_URL}/jwt`, user, {
-                    withCredentials: true,
-                })
-                    .then((res) => {
-                        const token = res.data.token;
-                        console.log(token)
-                        if (res.data.success) {
-                            toast("Login Successfully!", { type: "success", autoClose: 2000 });
-                            setTimeout(() => {
-                                navigate(redirect);
-                            }, 3000)
-                        }
-                    })
+                toast("Login Successfully!", { type: "success", autoClose: 2000 });
+                setTimeout(() => {
+                    navigate(redirect);
+                }, 3000)
             })
             .catch(() => {
                 toast.error("Invalid login credentials. Please check your email and password.", { type: "error", autoClose: 2000 })
@@ -166,7 +143,7 @@ const Login = () => {
                             </Button>
                         </form>
                         <Button onClick={() => SignInWithGoogle()} variant="outline" className="w-full">
-                           <FcGoogle className="text-xl mr-2"></FcGoogle> Continue with Google
+                            <FcGoogle className="text-xl mr-2"></FcGoogle> Continue with Google
                         </Button>
                     </div>
                     <div className="mt-4 text-center text-sm">
