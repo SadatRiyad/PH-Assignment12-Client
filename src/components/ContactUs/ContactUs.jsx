@@ -56,9 +56,6 @@ const ContactUs = () => {
         }
         // reset the form
         setFormData({ name: '', email: '', message: '' });
-        // Add your form submission logic here
-        console.log(formData);
-        // You can send formData to your backend or handle it accordingly
     };
 
     return (
@@ -67,7 +64,7 @@ const ContactUs = () => {
                 <title>Contact Us | BB-Matrimony</title>
             </Helmet>
             <div data-aos="fade-up" data-aos-duration="700" data-aos-anchor-placement="top-bottom" data-aos-delay="50" className="container mx-auto px-4 pb-0">
-                <img src={contactImg} alt="Contact" className="w-full h-auto rounded-t-xl mb-0 md:-mt-28" />
+                <img src={contactImg} alt="Contact" className="w-full h-auto rounded-t-xl mb-0 md:-mt-48" />
             </div>
             <div className="container mx-auto px-4 pt-8 pb-6">
 
