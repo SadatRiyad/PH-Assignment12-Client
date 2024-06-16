@@ -32,7 +32,7 @@ const ProfilesSection = () => {
     }, [profileData, sortOrder]);
 
     return (
-        <div className="container mx-auto py-6 bg-slate-200 pb-10">
+        <div className="container mx-auto py-12 bg-slate-200" id='premium'>
             <div className="flex flex-col md:flex-row justify-between mb-12 items-center">
                 <div className='mb-6 md:mb-0 text-center md:text-left'>
                     <h5 className='text-4xl font-extrabold text-customGulabi mb-1'>_______</h5>

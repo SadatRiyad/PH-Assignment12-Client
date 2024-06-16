@@ -72,7 +72,7 @@ const Navbar = () => {
                             <Button variant="secondary" size="icon" className="rounded-full">
                                 <CircleUser className="h-5 w-5" />
                                 <span className="sr-only">Toggle menu</span>
-                                <Avatar className="w-15 rounded-full p-[2px]">
+                                <Avatar className="w-15 rounded-full p-[2px] border border-customBlue">
                                     <AvatarImage className="rounded-full" src={user?.photoURL} />
                                     <AvatarFallback></AvatarFallback>
                                 </Avatar>
@@ -80,6 +80,8 @@ const Navbar = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem><Link to="/dashboard">My Dashboard</Link></DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                         </DropdownMenuContent>

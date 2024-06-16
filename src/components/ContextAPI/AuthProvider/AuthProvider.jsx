@@ -14,7 +14,6 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [render, setRender] = useState(false);
     const [render1, setRender1] = useState(false);
-    const [data, setData] = useState([]);
 
     // google auth provider
     const googleProvider = new GoogleAuthProvider();
@@ -102,7 +101,7 @@ const AuthProvider = ({ children }) => {
                         if (token) {
                             localStorage.setItem('access-token', token);
                             setLoading(false);
-                            console.log(loading)
+                            // console.log(loading)
                         }
                     })
             } else {
@@ -114,24 +113,10 @@ const AuthProvider = ({ children }) => {
         return () => unSubscribe();
     }, [render, auth, user?.email, loading]);
 
-    // useEffet for loading api
-    useEffect(() => {
-        const unData = fetch(`${import.meta.env.VITE_API_URL}/biodatas`)
-            .then(res => res.json())
-            .then(data => {
-                setData(data);
-                // console.log(data);
-            })
-            .catch(err => console.log(err))
-        return () => unData;
-    }, [render1, setRender1]);
-
-
 
     // value to be provided to the children components in the AuthContext
     const authInfo = {
         auth,
-        data,
         user,
         setUser,
         setRender1,

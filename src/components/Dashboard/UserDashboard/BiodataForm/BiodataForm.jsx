@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -17,27 +17,29 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import useAxiosSecure from "@/components/Hooks/useAxiosSecure/useAxiosSecure";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import useBiodatas from "@/components/Hooks/useBiodatas/useBiodatas";
 
 const BiodataForm = () => {
     const axiosSecure = useAxiosSecure();
-    const { user, data } = useAuth();
-    const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
+    const { user } = useAuth();
+    const [biodatas] = useBiodatas();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const [isEditMode, setIsEditMode] = useState(false);
     const [biodata, setBiodata] = useState(null);
-    const prevBiodataID = data.length;
+    const prevBiodataID = biodatas.length;
     const newBiodataID = prevBiodataID + 1;
     const biodataID = "BiodataID-" + newBiodataID;
 
     const [selectValues, setSelectValues] = useState({
-        biodataType: '',
-        height: '',
-        weight: '',
-        occupation: '',
-        race: '',
-        permanentDivision: '',
-        presentDivision: '',
-        expectedPartnerHeight: '',
-        expectedPartnerWeight: '',
+        biodataType: isEditMode ? `${biodata?.biodataType}` : '',
+        height: isEditMode ? `${biodata?.height}` : '',
+        weight: isEditMode ? `${biodata?.weight}` : '',
+        occupation: isEditMode ? `${biodata?.occupation}` : '',
+        race: isEditMode ? `${biodata?.race}` : '',
+        permanentDivision: isEditMode ? `${biodata?.permanentDivision}` : '',
+        presentDivision: isEditMode ? `${biodata?.presentDivision}` : '',
+        expectedPartnerHeight: isEditMode ? `${biodata?.expectedPartnerHeight}` : '',
+        expectedPartnerWeight: isEditMode ? `${biodata?.weight}` : '',
     });
 
     // using tanstack and axiosSecure without useEffect
@@ -48,10 +50,43 @@ const BiodataForm = () => {
             if (res.data.length > 0) {
                 setBiodata(res.data[0]);
                 setIsEditMode(true);
+                for (const [key, value] of Object.entries(res.data)) {
+                    setValue(key, value);
+                }
+                setSelectValues({
+                    biodataType: res.data.biodataType || '',
+                    height: res.data.height || '',
+                    weight: res.data.weight || '',
+                    occupation: res.data.occupation || '',
+                    race: res.data.race || '',
+                    permanentDivision: res.data.permanentDivision || '',
+                    presentDivision: res.data.presentDivision || '',
+                    expectedPartnerHeight: res.data.expectedPartnerHeight || '',
+                    expectedPartnerWeight: res.data.expectedPartnerWeight || '',
+                });
             }
             return [myBiodata, loading, refetch]
         },
     });
+    useEffect(() => {
+        if (isEditMode && biodata) {
+            setSelectValues({
+                biodataType: biodata.biodataType || '',
+                height: biodata.height || '',
+                weight: biodata.weight || '',
+                occupation: biodata.occupation || '',
+                race: biodata.race || '',
+                permanentDivision: biodata.permanentDivision || '',
+                presentDivision: biodata.presentDivision || '',
+                expectedPartnerHeight: biodata.expectedPartnerHeight || '',
+                expectedPartnerWeight: biodata.expectedPartnerWeight || '',
+            });
+        }
+    }, [isEditMode, biodata]);
+
+    if (loading) {
+        return <div className="flex text-center items-center justify-center h-dvh w-dvw">Loading...</div>
+    }
 
     const handleSelectChange = (name, value) => {
         setValue(name, value);
@@ -69,7 +104,6 @@ const BiodataForm = () => {
         }).then((response) => {
             if (response.data.acknowledged == true) {
                 toast("Biodata saved successfully!", { type: "success", autoClose: 2000 });
-                reset();
                 refetch();
             }
         }).catch((error) => {
@@ -77,13 +111,9 @@ const BiodataForm = () => {
             toast("Failed to save biodata. Please try again.", { type: "error", autoClose: 2000 });
         });
     };
-    if (loading) {
-        return <div className="flex text-center items-center justify-center h-dvh w-dvw">Loading...</div>
-    }
-    // console.log(biodata.biodataType)
 
     return (
-        <div className="p-8 md:px-20 min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500">
+        <div className="p-4 md:p-8 md:px-20 min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500">
             <Helmet>
                 <title>{isEditMode ? "Edit Biodata" : "Create Biodata"} | BB-Matrimony</title>
             </Helmet>
@@ -95,7 +125,7 @@ const BiodataForm = () => {
                     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="biodataType">Biodata Type</Label>
-                            <Select id="biodataType" {...register("biodataType", { required: "Biodata Type is required" })} value={selectValues.biodataType} onValueChange={(value) => handleSelectChange('biodataType', value)}>
+                            <Select id="biodataType" {...register("biodataType", !isEditMode && { required: "Biodata Type is required" })} value={selectValues.biodataType} onValueChange={(value) => handleSelectChange('biodataType', value)}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata?.biodataType}` : "Select Biodata Type"} />
                                 </SelectTrigger>
@@ -127,7 +157,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="height">Height</Label>
-                            <Select id="height" value={selectValues.height} onValueChange={(value) => handleSelectChange('height', value)} {...register("height", { required: "Height is required" })}>
+                            <Select id="height" value={selectValues.height} onValueChange={(value) => handleSelectChange('height', value)} {...register("height", !isEditMode && { required: "Height is required" })}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata?.height}` : "Select Height"} />
                                 </SelectTrigger>
@@ -142,7 +172,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="weight">Weight</Label>
-                            <Select id="weight" value={selectValues.weight} onValueChange={(value) => handleSelectChange('weight', value)} {...register("weight", { required: "Weight is required" })}>
+                            <Select id="weight" value={selectValues.weight} onValueChange={(value) => handleSelectChange('weight', value)} {...register("weight", !isEditMode && { required: "Weight is required" })}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata?.weight}` : "Select Weight"} />
 
@@ -164,7 +194,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="occupation">Occupation</Label>
-                            <Select id="occupation" value={selectValues.occupation} onValueChange={(value) => handleSelectChange('occupation', value)} {...register("occupation", { required: "Occupation is required" })}>
+                            <Select id="occupation" value={selectValues.occupation} onValueChange={(value) => handleSelectChange('occupation', value)} {...register("occupation", !isEditMode && { required: "Occupation is required" })}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata?.occupation}` : "Select Occupation"} />
                                 </SelectTrigger>
@@ -179,10 +209,9 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="race">Race</Label>
-                            <Select id="race" value={selectValues.race} onValueChange={(value) => handleSelectChange('race', value)} {...register("race", { required: "Race is required" })}>
+                            <Select id="race" value={selectValues.race} onValueChange={(value) => handleSelectChange('race', value)} {...register("race", !isEditMode && { required: "Race is required" })}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata?.race}` : "Select Race"} />
-
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Asian">Asian</SelectItem>
@@ -205,7 +234,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="permanentDivision">Permanent Division</Label>
-                            <Select id="permanentDivision" value={selectValues.permanentDivision} onValueChange={(value) => handleSelectChange('permanentDivision', value)} {...register("permanentDivision", { required: "Permanent Division is required" })}>
+                            <Select id="permanentDivision" value={selectValues.permanentDivision} onValueChange={(value) => handleSelectChange('permanentDivision', value)} {...register("permanentDivision", !isEditMode && { required: "Permanent Division is required" })}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata?.permanentDivision}` : "Select Permanent Division"} />
                                 </SelectTrigger>
@@ -224,7 +253,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="presentDivision">Present Division</Label>
-                            <Select id="presentDivision" value={selectValues.presentDivision} onValueChange={(value) => handleSelectChange('presentDivision', value)} {...register("presentDivision", { required: "Present Division is required" })}>
+                            <Select id="presentDivision" value={selectValues.presentDivision} onValueChange={(value) => handleSelectChange('presentDivision', value)} {...register("presentDivision", !isEditMode && { required: "Present Division is required" })}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata.presentDivision}` : "Select Present Division"} />
                                 </SelectTrigger>
@@ -248,7 +277,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="expectedPartnerHeight">Expected Partner Height</Label>
-                            <Select id="expectedPartnerHeight" value={selectValues.expectedPartnerHeight} onValueChange={(value) => handleSelectChange('expectedPartnerHeight', value)} {...register("expectedPartnerHeight", { required: "Expected Partner Height is required" })}>
+                            <Select id="expectedPartnerHeight" value={selectValues.expectedPartnerHeight} onValueChange={(value) => handleSelectChange('expectedPartnerHeight', value)} {...register("expectedPartnerHeight", !isEditMode && { required: "Expected Partner Height is required" })}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata?.expectedPartnerHeight}` : "Select Expected Partner Height"} />
                                 </SelectTrigger>
@@ -263,7 +292,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="expectedPartnerWeight">Expected Partner Weight</Label>
-                            <Select id="expectedPartnerWeight" value={selectValues.expectedPartnerWeight} onValueChange={(value) => handleSelectChange('expectedPartnerWeight', value)} {...register("expectedPartnerWeight", { required: "Expected Partner Weight is required" })}>
+                            <Select id="expectedPartnerWeight" value={selectValues.expectedPartnerWeight} onValueChange={(value) => handleSelectChange('expectedPartnerWeight', value)} {...register("expectedPartnerWeight", !isEditMode && { required: "Expected Partner Weight is required" })}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={isEditMode ? `${biodata.expectedPartnerWeight}` : "Select Expected Partner Weight"} />
                                 </SelectTrigger>
