@@ -115,7 +115,7 @@ const BiodataForm = () => {
     return (
         <div className="p-4 md:p-8 md:px-20 min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500">
             <Helmet>
-                <title>{isEditMode ? "Edit Biodata" : "Create Biodata"} | BB-Matrimony</title>
+                <title>{isEditMode ? "Edit Biodata" : "Add Biodata"} | BB-Matrimony</title>
             </Helmet>
             <Card className="mx-auto max-w-xl">
                 <CardHeader className="text-center">

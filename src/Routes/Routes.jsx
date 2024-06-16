@@ -13,7 +13,7 @@ import ViewBiodata from '@/components/Dashboard/UserDashboard/ViewBiodata/ViewBi
 import BiodataForm from '@/components/Dashboard/UserDashboard/BiodataForm/BiodataForm';
 import MyContactRequests from '@/components/Dashboard/UserDashboard/MyContactRequests/MyContactRequests';
 import FavouritesBiodata from '@/components/Dashboard/UserDashboard/FavouritesBiodata/FavouritesBiodata';
-import Dashboard from '@/components/Dashboard/UserDashboard/Dashboard/Dashboard';
+import Dashboard from '@/components/Dashboard/Dashboard/Dashboard';
 import AdminDashboard from '@/components/Dashboard/AdminDashboard/AdminDashboard/AdminDashboard';
 import ManageUsers from '@/components/Dashboard/AdminDashboard/ManageUsers/ManageUsers';
 import ApprovedPremium from '@/components/Dashboard/AdminDashboard/ApprovedPremium/ApprovedPremium';
