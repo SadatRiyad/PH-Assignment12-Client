@@ -10,8 +10,8 @@ const Dashboard = ({isAdmin}) => {
     const { user, logoutUser } = useAuth();
     // const isAdmin = 'users';
     const biodata= useMyBiodata();
-    const forLgClass = "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary";
-    const forMblClass = "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground";
+    const forLgClass = "flex items-center gap-3 rounded-lg px-3 py-2 text-customBlue transition-all hover:text-primary";
+    const forMblClass = "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-customBlue hover:text-white";
 
     const handleLogout = () => {
         logoutUser();
@@ -75,7 +75,7 @@ const Dashboard = ({isAdmin}) => {
                     </>
                 ) : (
                     <>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">View Biodata</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/viewBiodata" className={`${forMblClass} md:${forLgClass}`}>
@@ -83,7 +83,7 @@ const Dashboard = ({isAdmin}) => {
                                 </NavLink>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Edit/Add Biodata</CardHeader>
                             <CardContent>
                                 {biodata.length ? (
@@ -97,7 +97,7 @@ const Dashboard = ({isAdmin}) => {
                                 )}
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">My Contact Requests</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/myContactRequest" className={`${forMblClass} md:${forLgClass}`}>
@@ -105,7 +105,7 @@ const Dashboard = ({isAdmin}) => {
                                 </NavLink>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Favourites Biodata</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/favouritesBiodata" className={`${forMblClass} md:${forLgClass}`}>
@@ -113,7 +113,7 @@ const Dashboard = ({isAdmin}) => {
                                 </NavLink>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Logout</CardHeader>
                             <CardContent>
                                 <button onClick={handleLogout} className={`${forMblClass} md:${forLgClass}`}>

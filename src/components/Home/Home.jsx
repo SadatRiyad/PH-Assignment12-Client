@@ -7,12 +7,9 @@ import Hero from './Hero/Hero';
 import ProfilesSection from './PremiumBanner/ProfilesSection/ProfilesSection';
 import HowItWorks from './HowItWorks/HowItWorks';
 import SuccessCounter from './SuccessCounter/SuccessCounter';
-// import useMyBiodata from '../Hooks/useBiodatas/useMyBiodata';
-// import useBiodatas from '../Hooks/useBiodatas/useBiodatas';
+import SuccessStoryList from './SuccessStory/SuccessStoryList';
 
 const Home = () => {
-    // const [biodata] = useMyBiodata();
-    // console.log(biodata);
 
     return (
         <div className='bg-base-300'>
@@ -23,6 +20,7 @@ const Home = () => {
             <ProfilesSection></ProfilesSection>
             <HowItWorks></HowItWorks>
             <SuccessCounter></SuccessCounter>
+            <SuccessStoryList></SuccessStoryList>
         </div>
     );
 };

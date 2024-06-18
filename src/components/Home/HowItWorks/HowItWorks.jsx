@@ -1,7 +1,7 @@
 const HowItWorks = () => {
     return (
         <section className="bg-gray-100 py-12 pb-16">
-            <div className="container mx-auto text-center">
+            <div data-aos="fade-up" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="250" className="container mx-auto text-center">
                 <h5 className='text-4xl font-extrabold text-customGulabi mb-1'>_______</h5>
                 <h2 className="text-4xl font-bold text-customBlue mb-10"><span className='text-customGulabi'>How</span> It Works</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -23,10 +23,10 @@ const SuccessCounter = () => {
   });
 
   return (
-    <section className="bg-customBlue text-white py-10 pb-16">
-      <div className="container mx-auto text-center">
+    <section className="bg-customBlue text-white py-12 pb-20">
+      <div data-aos="zoom-in" data-aos-duration="1500" data-aos-anchor-placement="top-bottom" data-aos-delay="100" className="container mx-auto text-center">
       <h5 className='text-4xl font-extrabold text-customGulabi mb-1'>_______</h5>
-      <h2 className="text-4xl font-bold mb-10"><span className='text-customGulabi'>Our</span> Success Stories</h2>
+      <h2 className="text-4xl font-bold mb-16"><span className='text-customGulabi'>BB-Matrimony</span> User Statistics</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="p-6 border hover:bg-customGulabi border-customGulabi rounded-full shadow">
             <h3 className="text-2xl font-bold mb-2">{counters.totalBiodatas}</h3>

@@ -34,12 +34,13 @@ const ProfilesSection = () => {
     return (
         <div className="container mx-auto py-12 bg-slate-200" id='premium'>
             <div className="flex flex-col md:flex-row justify-between mb-12 items-center">
-                <div className='mb-6 md:mb-0 text-center md:text-left'>
+                <div data-aos="fade-right" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0"  className='mb-6 md:mb-0 text-center md:text-left'>
                     <h5 className='text-4xl font-extrabold text-customGulabi mb-1'>_______</h5>
                     <h2 className="text-4xl font-bold text-customBlue"><span className='text-customGulabi'>Premium</span> Profiles</h2>
                     <p className="">Check out the latest six premium member
                     profiles cards</p>
                 </div>
+                <div data-aos="fade-left" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" >
                 <Select onValueChange={setSortOrder}>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Sort Based on Age" />
@@ -52,6 +53,7 @@ const ProfilesSection = () => {
                         </SelectGroup>
                     </SelectContent>
                 </Select>
+                </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
                 {profiles.map((profile) => (
