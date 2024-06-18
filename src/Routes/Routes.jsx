@@ -60,11 +60,11 @@ export const router = createBrowserRouter([
       // Add dashboard routes here for user
       {
         path:"/dashboard",
-        element: <Dashboard></Dashboard>,
+        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
       },
       {
         path: "viewBiodata",
-        element: <ViewBiodata></ViewBiodata>,
+        element: <PrivateRoute><ViewBiodata></ViewBiodata></PrivateRoute>,
       },
       {
         path: "addBiodata",
@@ -85,19 +85,19 @@ export const router = createBrowserRouter([
       // for admin
       {
         path: "adminDashboard",
-        element: <AdminDashboard></AdminDashboard>,
+        element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>,
       },
       {
         path: "manageUsers",
-        element: <ManageUsers></ManageUsers>,
+        element: <PrivateRoute><ManageUsers></ManageUsers></PrivateRoute>,
       },
       {
         path: "approvedPremium",
-        element: <ApprovedPremium></ApprovedPremium>,
+        element: <PrivateRoute><ApprovedPremium></ApprovedPremium></PrivateRoute>,
       },
       {
         path: "approvedContactRequest",
-        element: <ApprovedContactRequest></ApprovedContactRequest>,
+        element: <PrivateRoute><ApprovedContactRequest></ApprovedContactRequest></PrivateRoute>,
       }
     ]
   },
