@@ -5,21 +5,24 @@ import { Link } from 'react-router-dom';
 // import { Button, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@shadcn/ui';
 
 const ProfileCard = ({ profile }) => {
-  const { id, type, image, division, age, occupation } = profile;
+  const { biodataID, biodataType, profileImage, permanentDivision, presentDivision, age, occupation } = profile;
 
   return (
-    <Card className="shadow-lg hover:drop-shadow-2xl">
+    <Card data-aos="fade-up" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="shadow-lg hover:drop-shadow-2xl">
       <CardHeader className="bg-customGulabi mb-4">
-        <img src={image} alt={`${type}`} className="bg-customBlue text-white text-center p-1 h-32 w-32 mx-auto rounded-full" />
+        <img data-aos="zoom-in" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" src={profileImage} alt={`${biodataType}`} className="bg-customBlue text-white text-center p-1 h-32 w-32 mx-auto rounded-full" />
       </CardHeader>
       <CardContent>
-        <CardTitle className="mb-1">Biodata Id: {id}</CardTitle>
-        <CardDescription>Biodata Type: {type}</CardDescription>
-        <CardDescription>Division: {division}</CardDescription>
+        <div data-aos="fade-right" data-aos-duration="600" data-aos-anchor-placement="top-bottom" data-aos-delay="0">
+        <CardTitle className="mb-1">Biodata Id: {biodataID}</CardTitle>
+        <CardDescription>Biodata Type: {biodataType}</CardDescription>
+        <CardDescription>Permanent Division: {permanentDivision}</CardDescription>
+        <CardDescription>Present Division: {presentDivision}</CardDescription>
         <CardDescription>Age: {age}</CardDescription>
         <CardDescription>Occupation: {occupation}</CardDescription>
-        <Link to={`/biodata/${id}`}>
-          <Button className="mt-4 w-full bg-customBlue hover:bg-customBlue text-white">View Profile</Button>
+        </div>
+        <Link to={`/biodata/${biodataID}`}>
+          <Button data-aos="fade-up" data-aos-duration="500" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="mt-4 w-full bg-customBlue hover:bg-customBlue text-white">View Profile</Button>
         </Link>
       </CardContent>
     </Card>
