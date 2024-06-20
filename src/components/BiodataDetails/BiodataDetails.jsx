@@ -5,10 +5,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { FaHeart, FaEnvelope, FaPhone } from "react-icons/fa";
 import useAxiosSecure from "../Hooks/useAxiosSecure/useAxiosSecure";
-import { ContactRoundIcon } from "lucide-react";
+import { ContactRoundIcon, HeartOff } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../Hooks/useAuth/useAuth";
 import ProfileCard from "../Home/PremiumBanner/ProfileCard/ProfileCard";
+import { Helmet } from "react-helmet-async";
 
 const BiodataDetails = () => {
     const axiosSecure = useAxiosSecure();
@@ -16,6 +17,7 @@ const BiodataDetails = () => {
     const { user } = useAuth();
     const biodataIds = biodata._id;
     const [isFavorite, setIsFavorite] = useState([]);
+    const [isFavorite1, setIsFavorite1] = useState(false);
     const [isPremium, setIsPremium] = useState(false);
     const [similarBiodatas, setSimilarBiodatas] = useState([]);
 
@@ -38,23 +40,28 @@ const BiodataDetails = () => {
         queryFn: async () => {
             const res = await axiosSecure.get(`/users/favorites/${user.email}`);
             const isFavoriteExist = res.data.find((favorite) => favorite.biodataId === biodata.biodataID);
-            setIsFavorite(isFavoriteExist);
+            if (isFavoriteExist) {
+                setIsFavorite(isFavoriteExist);
+                setIsFavorite1(true);
+            } else {
+                setIsFavorite1(false);
+            }
             return [refetch, favorites, loadingFavorites];
         }
     })
 
     // fetchSimilarBiodatas with tanstack
     const { refetch: refetchSimilar, data: similarBiodatasData = [], isPending: loadingSimilarBiodatas, } = useQuery({
-            queryKey: ['similarBiodatas', biodata.biodataType, biodataIds],
-            queryFn: async () => {
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/biodatas`, { withCredentials: true });
-                const fetchedSimilarBiodatas = res.data.filter(
-                    (b) => b.biodataType === biodata.biodataType && b._id !== biodataIds
-                ).slice(0, 3);
-                setSimilarBiodatas(fetchedSimilarBiodatas);
-                return [similarBiodatasData, refetchSimilar, loadingSimilarBiodatas];
-            }
-        })
+        queryKey: ['similarBiodatas', biodata.biodataType, biodataIds],
+        queryFn: async () => {
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/biodatas`, { withCredentials: true });
+            const fetchedSimilarBiodatas = res.data.filter(
+                (b) => b.biodataType === biodata.biodataType && b._id !== biodataIds
+            ).slice(0, 3);
+            setSimilarBiodatas(fetchedSimilarBiodatas);
+            return [similarBiodatasData, refetchSimilar, loadingSimilarBiodatas];
+        }
+    })
     if (loading || loadingFavorites || loadingSimilarBiodatas) {
         <div className="flex w-full items-center justify-center h-screen">Loading...</div>
     }
@@ -125,11 +132,14 @@ const BiodataDetails = () => {
 
     return (
         <div className="container px-0 mx-auto">
+            <Helmet>
+                <title>{biodataID} | BB-Matrimony</title>
+            </Helmet>
             {biodata ? (
                 <div className="biodata-details">
                     <h1 className="text-4xl font-bold text-center bg-customBlue pt-1 pb-3 text-white border-x-4 border-x-customGulabi  border-t-4 border-t-customGulabi"><span className='text-4xl font-extrabold text-customGulabi'>_______</span> <br />{biodataID}</h1>
                     <div className="flex flex-col lg:flex-row border-4 border-customGulabi bg-customBlue text-white p-6 lg:items-center">
-                        <img data-aos="fade-right" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" src={profileImage} alt={name} className="w-full lg:w-2/4 rounded-lg lg:mr-8 border-4 border-customGulabi" />
+                        <img data-aos="fade-right" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" src={profileImage} alt={name} className="w-full min-h-60 max-h-screen lg:w-2/4 rounded-lg lg:mr-8 border-4 border-customGulabi" />
                         <div data-aos="fade-left" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="lg:ml-5 mt-5 lg:mt-5">
                             <h2 className="text-3xl md:text-5xl font-bold mb-2 text-customGulabi">{name}</h2>
                             <p className="text-lg">Age: <span className="text-customGulabi ml-1 font-semibold">{age}</span></p>
@@ -155,26 +165,26 @@ const BiodataDetails = () => {
                                 </a>
                             </div>
 
-                            <div className="md:flex gap-4 mt-6 w-full h-fit mb-4">
-                                {isFavorite ? (
-                                    <button data-aos="zoom-in" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0"
-                                        className="btn btn-primary bg-customGulabi text-white mb-3 p-4 flex gap-1 w-full md:w-fit h-fit items-center"
+                            <div data-aos="zoom-in" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="md:flex gap-4 mt-6 w-full h-fit mb-4">
+                                {isFavorite1 ? (
+                                    <button 
+                                        className="btn btn-primary bg-primary-foreground font-bold border-2 text-customGulabi justify-center border-customGulabi mb-3 p-4 flex gap-1 w-full md:w-fit h-fit items-center"
                                         onClick={handleRemoveFavorites}
                                     >
-                                        <FaHeart /> Remove from Favorites
+                                        <HeartOff className="text-customGulabi"/> Remove from Favorites
                                     </button>)
                                     : (
-                                        <button data-aos="zoom-in" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0"
-                                            className="btn btn-primary bg-customGulabi text-white mb-3 p-4 flex gap-1 w-full md:w-fit h-fit items-center"
+                                        <button
+                                            className="btn btn-primary bg-customGulabi border-2 border-customGulabi justify-center text-white mb-3 p-4 flex gap-1 w-full md:w-fit h-fit items-center"
                                             onClick={handleAddToFavorites}
                                         >
                                             <FaHeart /> Add to Favorites
                                         </button>
                                     )}
                                 {!isPremium && (
-                                    <button data-aos="zoom-in" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0"
+                                    <button 
                                         id="PremiumReq"
-                                        className="btn btn-secondary bg-customGulabi text-white p-4 flex gap-1 w-full md:w-fit h-fit items-center"
+                                        className="btn btn-secondary bg-customGulabi justify-center text-white p-4 flex gap-1 w-full md:w-fit h-fit items-center"
                                         onClick={handleRequestContactInfo}
                                     >
                                         <ContactRoundIcon />
@@ -196,7 +206,7 @@ const BiodataDetails = () => {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
                             {similarBiodatas.map((profile) => (
-                                <ProfileCard key={profile._id} profile={profile} refetch={refetch} isFavorite={isFavorite}/>
+                                <ProfileCard key={profile._id} profile={profile} refetch={refetch} isFavorite={isFavorite} />
                             ))}
                         </div>
                     </div>

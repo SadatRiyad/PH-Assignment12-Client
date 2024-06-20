@@ -4,18 +4,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Link } from 'react-router-dom';
 // import { Button, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@shadcn/ui';
 
-const ProfileCard = ({ profile, refetch, isFavorite }) => {
+const ProfileCard = ({ profile, refetch ,isFavorite}) => {
   const { biodataID, biodataType, profileImage, permanentDivision, presentDivision, age, occupation } = profile;
-
   const handleState = () => {
     if (isFavorite) {
       setTimeout(() => {
         refetch();
-        window.location.reload();
-      }, 100);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 1100);
+      }, 700);
     }
   };
 

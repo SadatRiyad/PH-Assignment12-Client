@@ -33,7 +33,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {isAdmin ? (
                     <>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Admin Dashboard</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/adminDashboard" className={`${forMblClass} md:${forLgClass}`}>
@@ -41,7 +41,7 @@ const Dashboard = () => {
                                 </NavLink>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Manage Users</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/manageUsers" className={`${forMblClass} md:${forLgClass}`}>
@@ -49,7 +49,7 @@ const Dashboard = () => {
                                 </NavLink>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Approved Premium</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/approvedPremium" className={`${forMblClass} md:${forLgClass}`}>
@@ -57,7 +57,7 @@ const Dashboard = () => {
                                 </NavLink>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Approved Contact Request</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/approvedContactRequest" className={`${forMblClass} md:${forLgClass}`}>
@@ -65,7 +65,7 @@ const Dashboard = () => {
                                 </NavLink>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Logout</CardHeader>
                             <CardContent>
                                 <button onClick={handleLogout} className={`${forMblClass} md:${forLgClass}`}>

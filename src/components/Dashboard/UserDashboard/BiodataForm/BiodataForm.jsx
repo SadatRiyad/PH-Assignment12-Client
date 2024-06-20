@@ -51,11 +51,11 @@ const BiodataForm = () => {
         queryKey: ['myBiodata'],
         queryFn: async () => {
             const res = await axiosSecure.get(`/biodata/email/${user.email}`)
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data) {
                 setBiodata(res.data);
                 setIsEditMode(true);
-                console.log(isEditMode)
+                // console.log(isEditMode)
                 for (const [key, value] of Object.entries(res.data)) {
                     setValue(key, value);
                 }

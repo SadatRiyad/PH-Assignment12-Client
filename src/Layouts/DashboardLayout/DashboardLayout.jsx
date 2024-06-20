@@ -56,10 +56,10 @@ export default function DashboardLayout() {
             <Link to="/dashboard" className={`${forMblClass} md:${forLgClass} text-customBlue`}>
                 <AiFillDashboard className="h-4 w-4" /> User Dashboard
             </Link>
+            {biodata?._id ? <NavLink to="/dashboard/editBiodata" className={`${forMblClass} md:${forLgClass}`}><Edit className="h-4 w-4" /> Edit Biodata</NavLink> : <NavLink to="/dashboard/addBiodata" className={`${forMblClass} md:${forLgClass}`}><Edit className="h-4 w-4" /> Add Biodata</NavLink>}
             <NavLink to="/dashboard/viewBiodata" className={`${forMblClass} md:${forLgClass}`}>
                 <View className="h-4 w-4" /> View Biodata
             </NavLink>
-            {biodata?._id ? <NavLink to="/dashboard/editBiodata" className={`${forMblClass} md:${forLgClass}`}><Edit className="h-4 w-4" /> Edit Biodata</NavLink> : <NavLink to="/dashboard/addBiodata" className={`${forMblClass} md:${forLgClass}`}><Edit className="h-4 w-4" /> Add Biodata</NavLink>}
             <NavLink to="/dashboard/myContactRequest" className={`${forMblClass} md:${forLgClass}`}>
                 <Contact className="h-4 w-4" /> My Contact Requests
             </NavLink>
