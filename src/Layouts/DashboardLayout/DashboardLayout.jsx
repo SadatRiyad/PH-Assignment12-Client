@@ -32,31 +32,34 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, NavLink, Outlet } from "react-router-dom"
 import logo from "../../assets/logo.png";
+import "../../index.css"
 import useAuth from "@/components/Hooks/useAuth/useAuth"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { FaUserCheck } from "react-icons/fa6"
 import useMyBiodata from "@/components/Hooks/useBiodatas/useMyBiodata"
+import { AiFillDashboard } from "react-icons/ai"
+import useAdmin from "@/components/Hooks/useAdmin/useAdmin"
 
 export default function DashboardLayout() {
     const { user, logoutUser } = useAuth();
     const [biodata, , loading] = useMyBiodata()
-    console.log(biodata.length)
     const handleLogout = () => {
         logoutUser();
     };
-
-    // TODO: get isAdmin value from the database
-    const isAdmin = 'user';
+    const [isAdmin] = useAdmin();
 
     const forLgClass = "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary";
     const forMblClass = "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground";
 
     const userLinks = (
         <>
+            <Link to="/dashboard" className={`${forMblClass} md:${forLgClass} text-customBlue`}>
+                <AiFillDashboard className="h-4 w-4" /> User Dashboard
+            </Link>
             <NavLink to="/dashboard/viewBiodata" className={`${forMblClass} md:${forLgClass}`}>
                 <View className="h-4 w-4" /> View Biodata
             </NavLink>
-            {biodata.length ? <NavLink to="/dashboard/editBiodata" className={`${forMblClass} md:${forLgClass}`}><Edit className="h-4 w-4" /> Edit Biodata</NavLink> : <NavLink to="/dashboard/addBiodata" className={`${forMblClass} md:${forLgClass}`}><Edit className="h-4 w-4" /> Add Biodata</NavLink>}
+            {biodata?._id ? <NavLink to="/dashboard/editBiodata" className={`${forMblClass} md:${forLgClass}`}><Edit className="h-4 w-4" /> Edit Biodata</NavLink> : <NavLink to="/dashboard/addBiodata" className={`${forMblClass} md:${forLgClass}`}><Edit className="h-4 w-4" /> Add Biodata</NavLink>}
             <NavLink to="/dashboard/myContactRequest" className={`${forMblClass} md:${forLgClass}`}>
                 <Contact className="h-4 w-4" /> My Contact Requests
             </NavLink>
@@ -70,6 +73,9 @@ export default function DashboardLayout() {
     );
     const adminLinks = (
         <>
+            <Link to="/dashboard" className={`${forMblClass} md:${forLgClass} text-customBlue`}>
+                <AiFillDashboard className="h-4 w-4" /> Dashboard
+            </Link>
             <NavLink to="/dashboard/adminDashboard" className={`${forMblClass} md:${forLgClass}`}>
                 <LayoutDashboardIcon className="h-4 w-4" /> Admin Dashboard
             </NavLink>
@@ -104,15 +110,15 @@ export default function DashboardLayout() {
                     <div className="flex-1">
                         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                             {
-                                isAdmin === 'user' ? userLinks : adminLinks
+                                !isAdmin ? userLinks : adminLinks
                             }
                         </nav>
                     </div>
                     <div className=" p-4 fixed bottom-0 ">
                         <Card x-chunk="dashboard-02-chunk-0">
                             <CardHeader className="p-2 pt-0 md:p-4">
-                                <CardTitle>Upgrade to Premium</CardTitle>
-                                <CardDescription className="text-balance">
+                                <CardTitle className="text-lg">Upgrade to Premium</CardTitle>
+                                <CardDescription className="text-balance text-sm">
                                     Unlock all features <br /> and get unlimited access <br /> to our support
                                     team.
                                 </CardDescription>
@@ -149,14 +155,14 @@ export default function DashboardLayout() {
                                 </Link>
 
                                 {
-                                    isAdmin === 'user' ? userLinks : adminLinks
+                                    !isAdmin ? userLinks : adminLinks
                                 }
                             </nav>
                             <div className="mt-auto">
                                 <Card>
                                     <CardHeader>
-                                        <CardTitle>Upgrade to Premium</CardTitle>
-                                        <CardDescription>
+                                        <CardTitle id="prem">Upgrade to Premium</CardTitle>
+                                        <CardDescription className="text-xs">
                                             Unlock all features and get unlimited access to our
                                             support team.
                                         </CardDescription>

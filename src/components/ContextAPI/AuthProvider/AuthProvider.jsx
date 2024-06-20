@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
-import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
 import app from "../../FirebaseConfig/FirebaseConfig";
 import axios from "axios";
 
@@ -13,12 +13,9 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [render, setRender] = useState(false);
-    const [render1, setRender1] = useState(false);
 
     // google auth provider
     const googleProvider = new GoogleAuthProvider();
-    // facebook auth provider
-    const facebookProvider = new FacebookAuthProvider();
 
     // loading 
     if (loading) {
@@ -38,22 +35,6 @@ const AuthProvider = ({ children }) => {
                     }
                     setUser(user);
                     axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
-                });
-        } catch (error) {
-            console.log(error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // sign in with facebook
-    const handleSignInWithFacebook = async () => {
-        try {
-            setLoading(true);
-            await signInWithPopup(auth, facebookProvider)
-                .then((result) => {
-                    const user = result.user;
-                    setUser(user);
                 });
         } catch (error) {
             console.log(error.message);
@@ -113,14 +94,11 @@ const AuthProvider = ({ children }) => {
         return () => unSubscribe();
     }, [render, auth, user?.email, loading]);
 
-
     // value to be provided to the children components in the AuthContext
     const authInfo = {
         auth,
         user,
         setUser,
-        setRender1,
-        render1,
         setRender,
         render,
         registerUser,
@@ -130,7 +108,6 @@ const AuthProvider = ({ children }) => {
         loading,
         setLoading,
         handleSignInWithGoogle,
-        handleSignInWithFacebook
     }
     // console.log(authInfo)
 

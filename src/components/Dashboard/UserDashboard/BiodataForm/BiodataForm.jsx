@@ -15,9 +15,10 @@ import useAuth from "@/components/Hooks/useAuth/useAuth";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import useAxiosSecure from "@/components/Hooks/useAxiosSecure/useAxiosSecure";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import useBiodatas from "@/components/Hooks/useBiodatas/useBiodatas";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const BiodataForm = () => {
     const axiosSecure = useAxiosSecure();
@@ -26,48 +27,54 @@ const BiodataForm = () => {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const [isEditMode, setIsEditMode] = useState(false);
     const [biodata, setBiodata] = useState(null);
+    const navigate = useNavigate();
+    const redirect = '/dashboard/editBiodata';
+    const id = biodata?._id;
     const prevBiodataID = biodatas.length;
     const newBiodataID = prevBiodataID + 1;
     const biodataID = "BiodataID-" + newBiodataID;
 
     const [selectValues, setSelectValues] = useState({
-        biodataType: isEditMode ? `${biodata?.biodataType}` : '',
-        height: isEditMode ? `${biodata?.height}` : '',
-        weight: isEditMode ? `${biodata?.weight}` : '',
-        occupation: isEditMode ? `${biodata?.occupation}` : '',
-        race: isEditMode ? `${biodata?.race}` : '',
-        permanentDivision: isEditMode ? `${biodata?.permanentDivision}` : '',
-        presentDivision: isEditMode ? `${biodata?.presentDivision}` : '',
-        expectedPartnerHeight: isEditMode ? `${biodata?.expectedPartnerHeight}` : '',
-        expectedPartnerWeight: isEditMode ? `${biodata?.weight}` : '',
+        biodataType: '',
+        height: '',
+        weight: '',
+        occupation: '',
+        race: '',
+        permanentDivision: '',
+        presentDivision: '',
+        expectedPartnerHeight: '',
+        expectedPartnerWeight: '',
     });
 
     // using tanstack and axiosSecure without useEffect
     const { data: myBiodata = [], isPending: loading, refetch } = useQuery({
         queryKey: ['myBiodata'],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/biodata/${user.email}`)
-            if (res.data.length > 0) {
-                setBiodata(res.data[0]);
+            const res = await axiosSecure.get(`/biodata/email/${user.email}`)
+            console.log(res.data)
+            if (res.data) {
+                setBiodata(res.data);
                 setIsEditMode(true);
+                console.log(isEditMode)
                 for (const [key, value] of Object.entries(res.data)) {
                     setValue(key, value);
                 }
                 setSelectValues({
-                    biodataType: res.data.biodataType || '',
-                    height: res.data.height || '',
-                    weight: res.data.weight || '',
-                    occupation: res.data.occupation || '',
-                    race: res.data.race || '',
-                    permanentDivision: res.data.permanentDivision || '',
-                    presentDivision: res.data.presentDivision || '',
-                    expectedPartnerHeight: res.data.expectedPartnerHeight || '',
-                    expectedPartnerWeight: res.data.expectedPartnerWeight || '',
+                    biodataType: res.data?.biodataType || '',
+                    height: res.data?.height || '',
+                    weight: res.data?.weight || '',
+                    occupation: res.data?.occupation || '',
+                    race: res.data?.race || '',
+                    permanentDivision: res.data?.permanentDivision || '',
+                    presentDivision: res.data?.presentDivision || '',
+                    expectedPartnerHeight: res.data?.expectedPartnerHeight || '',
+                    expectedPartnerWeight: res.data?.expectedPartnerWeight || '',
                 });
             }
-            return [myBiodata, loading, refetch]
+            return [myBiodata, loading, refetch];
         },
     });
+
     useEffect(() => {
         if (isEditMode && biodata) {
             setSelectValues({
@@ -94,24 +101,35 @@ const BiodataForm = () => {
     };
 
     const onSubmit = (data) => {
-        const url = isEditMode ? `${import.meta.env.VITE_API_URL}/biodata/${user.email}` : `${import.meta.env.VITE_API_URL}/biodata`;
-        const method = isEditMode ? "put" : "post";
-        axios({
-            method,
-            url,
-            data: isEditMode ? { ...data, email: user.email } : { ...data, email: user.email, biodataID },
-            withCredentials: true,
-        }).then((response) => {
-            if (response.data.acknowledged == true) {
-                toast("Biodata saved successfully!", { type: "success", autoClose: 2000 });
-                refetch();
-            }
-        }).catch((error) => {
-            console.log(error)
-            toast("Failed to save biodata. Please try again.", { type: "error", autoClose: 2000 });
-        });
+        if (isEditMode) {
+            axiosSecure.put(`/biodata/id/${id}`, data)
+                .then((response) => {
+                    if (response.data.acknowledged === true) {
+                        toast("Biodata Updated successfully!", { type: "success", autoClose: 2000 });
+                        refetch();
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                    toast("Failed to Update biodata. Please try again.", { type: "error", autoClose: 2000 });
+                });
+        } else {
+            axios({
+                method: "post",
+                url: `${import.meta.env.VITE_API_URL}/biodata`,
+                data: { ...data, email: user.email, biodataID },
+                withCredentials: true,
+            }).then((response) => {
+                if (response.data.acknowledged === true) {
+                    toast("Biodata saved successfully!", { type: "success", autoClose: 2000 });
+                    navigate(redirect);
+                    refetch();
+                }
+            }).catch((error) => {
+                console.log(error)
+                toast("Failed to save biodata. Please try again.", { type: "error", autoClose: 2000 });
+            });
+        }
     };
-
     return (
         <div className="p-4 md:p-8 md:px-20 min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500">
             <Helmet>
@@ -255,7 +273,7 @@ const BiodataForm = () => {
                             <Label htmlFor="presentDivision">Present Division</Label>
                             <Select id="presentDivision" value={selectValues.presentDivision} onValueChange={(value) => handleSelectChange('presentDivision', value)} {...register("presentDivision", !isEditMode && { required: "Present Division is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder={isEditMode ? `${biodata.presentDivision}` : "Select Present Division"} />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.presentDivision}` : "Select Present Division"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Dhaka">Dhaka</SelectItem>
@@ -294,7 +312,7 @@ const BiodataForm = () => {
                             <Label htmlFor="expectedPartnerWeight">Expected Partner Weight</Label>
                             <Select id="expectedPartnerWeight" value={selectValues.expectedPartnerWeight} onValueChange={(value) => handleSelectChange('expectedPartnerWeight', value)} {...register("expectedPartnerWeight", !isEditMode && { required: "Expected Partner Weight is required" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder={isEditMode ? `${biodata.expectedPartnerWeight}` : "Select Expected Partner Weight"} />
+                                    <SelectValue placeholder={isEditMode ? `${biodata?.expectedPartnerWeight}` : "Select Expected Partner Weight"} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="Light">Light</SelectItem>
@@ -312,7 +330,7 @@ const BiodataForm = () => {
 
                         <div className="grid gap-2 form-control mb-1">
                             <Label htmlFor="mobile">Mobile Number</Label>
-                            <Input defaultValue={isEditMode ? `${biodata.mobile}` : ''} id="mobile" {...register("mobile", { required: "Mobile Number is required" })} placeholder="Mobile Number" />
+                            <Input defaultValue={isEditMode ? `${biodata?.mobile}` : ''} id="mobile" {...register("mobile", { required: "Mobile Number is required" })} placeholder="Mobile Number" />
                             {errors.mobile && <span className="text-customRed text-sm mt-1">{errors.mobile.message}</span>}
                         </div>
 

@@ -4,8 +4,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Link } from 'react-router-dom';
 // import { Button, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@shadcn/ui';
 
-const ProfileCard = ({ profile }) => {
+const ProfileCard = ({ profile, refetch, isFavorite }) => {
   const { biodataID, biodataType, profileImage, permanentDivision, presentDivision, age, occupation } = profile;
+
+  const handleState = () => {
+    if (isFavorite) {
+      setTimeout(() => {
+        refetch();
+        window.location.reload();
+      }, 100);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 1100);
+    }
+  };
 
   return (
     <Card data-aos="fade-up" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="shadow-lg hover:drop-shadow-2xl">
@@ -14,14 +26,14 @@ const ProfileCard = ({ profile }) => {
       </CardHeader>
       <CardContent>
         <div data-aos="fade-right" data-aos-duration="600" data-aos-anchor-placement="top-bottom" data-aos-delay="0">
-        <CardTitle className="mb-1">Biodata Id: {biodataID}</CardTitle>
-        <CardDescription>Biodata Type: {biodataType}</CardDescription>
-        <CardDescription>Permanent Division: {permanentDivision}</CardDescription>
-        <CardDescription>Present Division: {presentDivision}</CardDescription>
-        <CardDescription>Age: {age}</CardDescription>
-        <CardDescription>Occupation: {occupation}</CardDescription>
+          <CardTitle className="mb-1">{biodataID}</CardTitle>
+          <CardDescription>Biodata Type: {biodataType}</CardDescription>
+          <CardDescription>Permanent Division: {permanentDivision}</CardDescription>
+          <CardDescription>Present Division: {presentDivision}</CardDescription>
+          <CardDescription>Age: {age}</CardDescription>
+          <CardDescription>Occupation: {occupation}</CardDescription>
         </div>
-        <Link to={`/biodata/${biodataID}`}>
+        <Link onClick={() => handleState()} to={`/biodata/${biodataID}`}>
           <Button data-aos="fade-up" data-aos-duration="500" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="mt-4 w-full bg-customBlue hover:bg-customBlue text-white">View Profile</Button>
         </Link>
       </CardContent>

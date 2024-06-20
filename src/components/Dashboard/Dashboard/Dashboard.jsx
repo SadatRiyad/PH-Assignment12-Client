@@ -5,11 +5,12 @@ import { View, Edit, Contact, Heart, LogOutIcon, LayoutDashboardIcon, Users, Con
 import { FaUserCheck } from 'react-icons/fa';
 import useMyBiodata from '@/components/Hooks/useBiodatas/useMyBiodata';
 import useAuth from '@/components/Hooks/useAuth/useAuth';
+import useAdmin from '@/components/Hooks/useAdmin/useAdmin';
 
-const Dashboard = ({isAdmin}) => {
+const Dashboard = () => {
+    const [isAdmin] = useAdmin();
     const { user, logoutUser } = useAuth();
-    // const isAdmin = 'users';
-    const biodata= useMyBiodata();
+    const biodata = useMyBiodata();
     const forLgClass = "flex items-center gap-3 rounded-lg px-3 py-2 text-customBlue transition-all hover:text-primary";
     const forMblClass = "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-customBlue hover:text-white";
 
@@ -86,13 +87,13 @@ const Dashboard = ({isAdmin}) => {
                         <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Edit/Add Biodata</CardHeader>
                             <CardContent>
-                                {biodata.length ? (
-                                    <NavLink to="/dashboard/addBiodata" className={`${forMblClass} md:${forLgClass}`}>
-                                        <Edit className="h-4 w-4" /> Add Biodata
-                                    </NavLink>
-                                ) : (
+                                {biodata[0]?.biodataID ? (
                                     <NavLink to="/dashboard/editBiodata" className={`${forMblClass} md:${forLgClass}`}>
                                         <Edit className="h-4 w-4" /> Edit Biodata
+                                    </NavLink>
+                                ) : (
+                                    <NavLink to="/dashboard/addBiodata" className={`${forMblClass} md:${forLgClass}`}>
+                                        <Edit className="h-4 w-4" /> Add Biodata
                                     </NavLink>
                                 )}
                             </CardContent>

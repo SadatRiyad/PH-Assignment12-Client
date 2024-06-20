@@ -18,6 +18,7 @@ import AdminDashboard from '@/components/Dashboard/AdminDashboard/AdminDashboard
 import ManageUsers from '@/components/Dashboard/AdminDashboard/ManageUsers/ManageUsers';
 import ApprovedPremium from '@/components/Dashboard/AdminDashboard/ApprovedPremium/ApprovedPremium';
 import ApprovedContactRequest from '@/components/Dashboard/AdminDashboard/ApprovedContactRequest/ApprovedContactRequest';
+import BiodataDetails from '@/components/BiodataDetails/BiodataDetails';
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,11 @@ export const router = createBrowserRouter([
       {
         path: "/biodatas",
         element: <Biodatas></Biodatas>,
+      },
+      {
+        path: "/biodata/:id",
+        element: <PrivateRoute><BiodataDetails></BiodataDetails></PrivateRoute>,
+        loader: ({ params }) => fetch(`${import.meta.env.VITE_API_URL}/biodata/${params.id}`, { credentials: 'include' }),
       },
       {
         path: "/aboutUs",
@@ -73,6 +79,7 @@ export const router = createBrowserRouter([
       {
         path: "editBiodata",
         element: <PrivateRoute><BiodataForm></BiodataForm></PrivateRoute>,
+        // loader: ({ params }) => fetch(`${import.meta.env.VITE_API_URL}/biodata/id/${params.id}`, { credentials: 'include' }),
       },
       {
         path: "myContactRequest",
