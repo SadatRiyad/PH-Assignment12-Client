@@ -72,6 +72,10 @@ const BiodataDetails = () => {
             const favData = {
                 ID: biodataIds,
                 biodataId: biodata.biodataID,
+                name: biodata.name,
+                permanentDivision: biodata.permanentDivision,
+                occupation: biodata.occupation,
+                profileImage: biodata.profileImage,
             };
             await axiosSecure.put(`/users/favorites/${user.email}`, favData)
                 .then((res) => {

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { NavLink } from 'react-router-dom';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { View, Edit, Contact, Heart, LogOutIcon, LayoutDashboardIcon, Users, Contact2 } from 'lucide-react';
+import { View, Edit, Contact, Heart, LogOutIcon, LayoutDashboardIcon, Users, Contact2, UserCircle } from 'lucide-react';
 import { FaUserCheck } from 'react-icons/fa';
 import useMyBiodata from '@/components/Hooks/useBiodatas/useMyBiodata';
 import useAuth from '@/components/Hooks/useAuth/useAuth';
@@ -77,14 +77,6 @@ const Dashboard = () => {
                 ) : (
                     <>
                         <Card className="hover:bg-customGulabi hover:text-white">
-                            <CardHeader className="font-bold">View Biodata</CardHeader>
-                            <CardContent>
-                                <NavLink to="/dashboard/viewBiodata" className={`${forMblClass} md:${forLgClass}`}>
-                                    <View className="h-4 w-4" /> View Biodata
-                                </NavLink>
-                            </CardContent>
-                        </Card>
-                        <Card className="hover:bg-customGulabi hover:text-white">
                             <CardHeader className="font-bold">Edit/Add Biodata</CardHeader>
                             <CardContent>
                                 {biodata[0]?.biodataID ? (
@@ -96,6 +88,14 @@ const Dashboard = () => {
                                         <Edit className="h-4 w-4" /> Add Biodata
                                     </NavLink>
                                 )}
+                            </CardContent>
+                        </Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
+                            <CardHeader className="font-bold">View Biodata</CardHeader>
+                            <CardContent>
+                                <NavLink to="/dashboard/viewBiodata" className={`${forMblClass} md:${forLgClass}`}>
+                                    <View className="h-4 w-4" /> View Biodata
+                                </NavLink>
                             </CardContent>
                         </Card>
                         <Card className="hover:bg-customGulabi hover:text-white">
@@ -111,6 +111,14 @@ const Dashboard = () => {
                             <CardContent>
                                 <NavLink to="/dashboard/favouritesBiodata" className={`${forMblClass} md:${forLgClass}`}>
                                     <Heart className="h-4 w-4" /> Favourites Biodata
+                                </NavLink>
+                            </CardContent>
+                        </Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
+                            <CardHeader className="font-bold">Got Married</CardHeader>
+                            <CardContent>
+                                <NavLink to="/dashboard/gotMarried" className={`${forMblClass} md:${forLgClass}`}>
+                                    <UserCircle className="h-4 w-4" /> Got Married Review
                                 </NavLink>
                             </CardContent>
                         </Card>

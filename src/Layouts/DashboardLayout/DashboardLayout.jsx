@@ -8,6 +8,7 @@ import {
     LogOutIcon,
     Menu,
     Search,
+    UserCircle,
     Users,
     View,
 } from "lucide-react"
@@ -66,6 +67,9 @@ export default function DashboardLayout() {
             <NavLink to="/dashboard/favouritesBiodata" className={`${forMblClass} md:${forLgClass}`}>
                 <Heart className="h-4 w-4" /> Favourites Biodata
             </NavLink>
+            <NavLink to="/dashboard/gotMarried" className={`${forMblClass} md:${forLgClass}`}>
+                <UserCircle className="h-4 w-4" /> Got Married
+            </NavLink>
             <button onClick={handleLogout} className={`${forMblClass} md:${forLgClass}`}>
                 <LogOutIcon className="h-4 w-4" /> Logout
             </button>
@@ -114,22 +118,26 @@ export default function DashboardLayout() {
                             }
                         </nav>
                     </div>
-                    <div className=" p-4 fixed bottom-0 ">
-                        <Card x-chunk="dashboard-02-chunk-0">
-                            <CardHeader className="p-2 pt-0 md:p-4">
-                                <CardTitle className="text-lg">Upgrade to Premium</CardTitle>
-                                <CardDescription className="text-balance text-sm">
-                                    Unlock all features <br /> and get unlimited access <br /> to our support
-                                    team.
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                                <Button size="sm" className="w-full">
-                                    Upgrade
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </div>
+                    {
+                        !isAdmin && (
+                            <div className=" p-4 fixed bottom-0 ">
+                                <Card x-chunk="dashboard-02-chunk-0">
+                                    <CardHeader className="p-2 pt-0 md:p-4">
+                                        <CardTitle className="text-lg">Upgrade to Premium</CardTitle>
+                                        <CardDescription className="text-balance text-sm">
+                                            Unlock all features <br /> and get unlimited access <br /> to our support
+                                            team.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                                        <Button size="sm" className="w-full">
+                                            Upgrade
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
             <div className="flex flex-col">

@@ -19,6 +19,7 @@ import ManageUsers from '@/components/Dashboard/AdminDashboard/ManageUsers/Manag
 import ApprovedPremium from '@/components/Dashboard/AdminDashboard/ApprovedPremium/ApprovedPremium';
 import ApprovedContactRequest from '@/components/Dashboard/AdminDashboard/ApprovedContactRequest/ApprovedContactRequest';
 import BiodataDetails from '@/components/BiodataDetails/BiodataDetails';
+import GotMarried from '@/components/Dashboard/UserDashboard/GotMarried/GotMarried';
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
       {
         path: "favouritesBiodata",
         element: <PrivateRoute><FavouritesBiodata></FavouritesBiodata></PrivateRoute>,
+      },
+      {
+        path: "gotMarried",
+        element: <PrivateRoute><GotMarried></GotMarried></PrivateRoute>,
       },
       // for admin
       {
