@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useAuth from "@/components/Hooks/useAuth/useAuth";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import useMyBiodata from "@/components/Hooks/useBiodatas/useMyBiodata";
 import { Helmet } from "react-helmet-async";
 
@@ -38,7 +38,11 @@ export default function GotMarried() {
         e.preventDefault();
         try {
             await axiosSecure.post("/marriages", formData)
-            toast.success("Congratulations! Your marriage story has been shared successfully.");
+            .then((res) => {
+                if (res.data) {
+                    toast("Congratulations! Your marriage story has been shared successfully.", { type: "success", autoClose: 2000 });
+                }
+            })
             // navigate("/dashboard");
         } catch (error) {
             console.error("Error submitting form:", error);
@@ -67,7 +71,7 @@ export default function GotMarried() {
                                 placeholder="Enter your biodata ID"
                                 value={formData.selfBiodataId}
                                 onChange={handleChange}
-                                required
+                                readOnly
                                 className="mt-1"
                             />
                         </div>
@@ -156,6 +160,7 @@ export default function GotMarried() {
                     </form>
                 </CardContent>
             </Card>
+            <ToastContainer/>
         </div>
     );
 }

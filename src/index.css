@@ -101,3 +101,71 @@ body {
 #prem{
   font-size: 17px !important;
 }
+
+
+.custom-range {
+  -webkit-appearance: none; /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 7px; /* Custom height */
+  background: #ddd; /* Track background color */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  transition: opacity .2s; /* Transition for opacity */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.custom-range:hover {
+  opacity: 1; /* Fully opaque on hover */
+}
+
+/* Custom track */
+.custom-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 7px;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.custom-range::-moz-range-track {
+  width: 100%;
+  height: 7px;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Custom thumb */
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default thumb */
+  appearance: none;
+  width: 15px; /* Thumb width */
+  height: 15px; /* Thumb height */
+  background: #E33183; /* Thumb color */
+  border: 1px dotted #1c085d ;
+  border-radius: 50%; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor */
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.custom-range::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #E33183; /* Thumb color */
+  border: 1px dotted #1c085d ;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom focus styles */
+.custom-range:focus::-webkit-slider-runnable-track {
+  background: #ccc; /* Track color when focused */
+}
+
+.custom-range:focus::-moz-range-track {
+  background: #ccc; /* Track color when focused */
+}

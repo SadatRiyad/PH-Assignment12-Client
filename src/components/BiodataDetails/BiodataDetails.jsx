@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ import ProfileCard from "../Home/PremiumBanner/ProfileCard/ProfileCard";
 import { Helmet } from "react-helmet-async";
 
 const BiodataDetails = () => {
+    const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
     const biodata = useLoaderData();
     const { user } = useAuth();
@@ -108,11 +109,12 @@ const BiodataDetails = () => {
 
     const handleRequestContactInfo = () => {
         // Redirect to checkout page
-        window.location.href = `/checkout/${_id}`;
+        // window.location.href = `/checkout/${biodataID}`;
+        // using Link
+        navigate(`/checkout/${biodataID}`);
     };
 
     const {
-        _id,
         name,
         age,
         biodataType,

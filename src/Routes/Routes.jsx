@@ -20,6 +20,7 @@ import ApprovedPremium from '@/components/Dashboard/AdminDashboard/ApprovedPremi
 import ApprovedContactRequest from '@/components/Dashboard/AdminDashboard/ApprovedContactRequest/ApprovedContactRequest';
 import BiodataDetails from '@/components/BiodataDetails/BiodataDetails';
 import GotMarried from '@/components/Dashboard/UserDashboard/GotMarried/GotMarried';
+import CheckoutPage from '@/components/CheckoutPage/CheckoutPage';
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +31,6 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-        // loader: () => fetch(`${import.meta.env.VITE_API_URL}/biodatas`),
       },
       {
         path: "/biodatas",
@@ -57,6 +57,10 @@ export const router = createBrowserRouter([
         path: "/register",
         element: <Register></Register>,
       },
+      {
+        path: "/checkout/:id",
+        element: <PrivateRoute><CheckoutPage></CheckoutPage></PrivateRoute>,
+      }
     ],
   },
   {

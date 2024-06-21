@@ -85,77 +85,79 @@ export default function FavouritesBiodata() {
         <div className="flex w-full items-center justify-center h-screen">Loading...</div>
     }
     return (
-       <>
-       {
-              isFavorite.length > 0 ? (
-                <Card>
-                <Helmet>
-                   <title>Favourites Biodata | BB-Matrimony</title>
-               </Helmet>
-               <CardHeader>
-                   <CardTitle>Favourites Biodata</CardTitle>
-                   <CardDescription>
-                       View and manage your favourite biodata profiles.
-                   </CardDescription>
-               </CardHeader>
-               <CardContent className="overflow-x-auto">
-                   <Table>
-                       <TableHeader>
-                           <TableRow>
-                               <TableHead className="w-[100px]">
-                                   Image
-                               </TableHead>
-                               <TableHead>Name</TableHead>
-                               <TableHead>Biodata Id</TableHead>
-                               <TableHead>Permanent Division</TableHead>
-                               <TableHead>Occupation</TableHead>
-                               <TableHead>Actions</TableHead>
-                           </TableRow>
-                       </TableHeader>
-                       <TableBody>
-                           {isFavorite.map(biodata => (
-                               <TableRow key={biodata.id}>
-                                   <TableCell className="sm:table-cell">
-                                       <img
-                                           alt="Profile"
-                                           className="aspect-square rounded-md object-cover w-16 h-16 border border-customBlue"
-                                           src={biodata.profileImage || '/placeholder.svg'}
-                                       />
-                                   </TableCell>
-                                   <TableCell className="font-medium">
-                                       {biodata.name}
-                                   </TableCell>
-                                   <TableCell>
-                                       {biodata.biodataId}
-                                   </TableCell>
-                                   <TableCell>
-                                       {biodata.permanentDivision}
-                                   </TableCell>
-                                   <TableCell>
-                                       {biodata.occupation}
-                                   </TableCell>
-                                   <TableCell>
-                                       <DropdownMenu>
-                                           <DropdownMenuTrigger asChild>
-                                               <Button aria-haspopup="true" size="icon" variant="ghost">
-                                                   <MoreHorizontal className="h-4 w-4" />
-                                                   <span className="sr-only">Toggle menu</span>
-                                               </Button>
-                                           </DropdownMenuTrigger>
-                                           <DropdownMenuContent align="end">
-                                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                               <DropdownMenuItem><Link to={`/biodata/${biodata.biodataId}`}>View Details</Link></DropdownMenuItem>
-                                               <DropdownMenuItem><a onClick={()=>handleRemoveFavorites(biodata.id)}>Delete</a></DropdownMenuItem>
-                                           </DropdownMenuContent>
-                                       </DropdownMenu>
-                                   </TableCell>
-                               </TableRow>
-                           ))}
-                       </TableBody>
-                   </Table>
-               </CardContent>
-   
-           </Card>
+        <>
+            {
+                isFavorite.length > 0 ? (
+                    <Card>
+                        <Helmet>
+                            <title>Favourites Biodata | BB-Matrimony</title>
+                        </Helmet>
+                        <CardHeader>
+                            <CardTitle>Favourites Biodata</CardTitle>
+                            <CardDescription>
+                                View and manage your favourite biodata profiles.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableCell>#</TableCell>
+                                        <TableHead className="w-[100px]">
+                                            Image
+                                        </TableHead>
+                                        <TableHead>Name</TableHead>
+                                        <TableHead>Biodata Id</TableHead>
+                                        <TableHead>Permanent Division</TableHead>
+                                        <TableHead>Occupation</TableHead>
+                                        <TableHead>Actions</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {isFavorite.map((biodata, index) => (
+                                        <TableRow key={biodata.id}>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell className="sm:table-cell">
+                                                <img
+                                                    alt="Profile"
+                                                    className="aspect-square rounded-md object-cover w-16 h-16 border border-customBlue"
+                                                    src={biodata.profileImage || '/placeholder.svg'}
+                                                />
+                                            </TableCell>
+                                            <TableCell className="font-medium">
+                                                {biodata.name}
+                                            </TableCell>
+                                            <TableCell>
+                                                {biodata.biodataId}
+                                            </TableCell>
+                                            <TableCell>
+                                                {biodata.permanentDivision}
+                                            </TableCell>
+                                            <TableCell>
+                                                {biodata.occupation}
+                                            </TableCell>
+                                            <TableCell>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button aria-haspopup="true" size="icon" variant="ghost">
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                            <span className="sr-only">Toggle menu</span>
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                        <DropdownMenuItem><Link to={`/biodata/${biodata.biodataId}`}>View Details</Link></DropdownMenuItem>
+                                                        <DropdownMenuItem><a onClick={() => handleRemoveFavorites(biodata.id)}>Delete</a></DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+
+                    </Card>
                 ) : (
                     <div className="flex -mt-8 flex-col w-full items-center justify-center text-center h-screen">
                         <h1 className="text-balance text-3xl mb-2 font-bold text-customBlue">You have No Favourites Biodata...</h1>
@@ -163,8 +165,8 @@ export default function FavouritesBiodata() {
                         <Link to="/biodatas" className="btn btn-primary bg-customGulabi text-white mb-3 p-4 flex gap-1 w-fit mt-4 justify-center h-fit items-center"> Add Biodata </Link>
                     </div>
                 )
-       }
-       </>
+            }
+        </>
     )
 }
 

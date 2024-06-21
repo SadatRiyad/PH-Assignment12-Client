@@ -33,6 +33,7 @@ const BiodataForm = () => {
     const prevBiodataID = biodatas.length;
     const newBiodataID = prevBiodataID + 1;
     const biodataID = "BiodataID-" + newBiodataID;
+    const isPremium = false;
 
     const [selectValues, setSelectValues] = useState({
         biodataType: '',
@@ -116,7 +117,7 @@ const BiodataForm = () => {
             axios({
                 method: "post",
                 url: `${import.meta.env.VITE_API_URL}/biodata`,
-                data: { ...data, email: user.email, biodataID },
+                data: { ...data, email: user.email, biodataID, isPremium },
                 withCredentials: true,
             }).then((response) => {
                 if (response.data.acknowledged === true) {

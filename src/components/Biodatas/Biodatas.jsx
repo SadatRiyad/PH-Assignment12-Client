@@ -4,6 +4,17 @@ import useBiodatas from '../Hooks/useBiodatas/useBiodatas';
 import ProfileCard from '../Home/PremiumBanner/ProfileCard/ProfileCard';
 import { Button } from '../ui/button';
 import { Search } from 'lucide-react';
+import "../../index.css"
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+
 
 const Biodatas = () => {
     const [biodatas, , loading] = useBiodatas();
@@ -13,7 +24,7 @@ const Biodatas = () => {
     const [selectedDivision, setSelectedDivision] = useState('');
     const [filterBiodatas, setFilterBiodatas] = useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const filteredBiodatas = biodatas.filter(biodata => {
             return (
                 (selectedType ? biodata.biodataType === selectedType : true) &&
@@ -22,7 +33,7 @@ const Biodatas = () => {
             );
         });
         setFilterBiodatas(filteredBiodatas);
-    },[ageRange, ageRange1, biodatas, selectedDivision, selectedType])
+    }, [ageRange, ageRange1, biodatas, selectedDivision, selectedType])
 
     if (loading) {
         return <div className="flex text-center items-center justify-center h-dvh w-dvw">Loading...</div>
@@ -78,7 +89,7 @@ const Biodatas = () => {
                         max="99"
                         value={ageRange.join(',')}
                         onChange={handleFilterChange}
-                        className="w-full"
+                        className="w-full custom-range"
                         multiple
                     />
                     <div className="flex justify-between">
@@ -133,6 +144,26 @@ const Biodatas = () => {
                         <ProfileCard key={profile._id} profile={profile} />
                     ))}
                 </div>
+                {
+                    filterBiodatas.length > 20 ? (
+                        <Pagination className="my-8 bg-customBlue w-fit text-white rounded-lg">
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious href="#" />
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink href="#">1</PaginationLink>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationEllipsis />
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationNext href="#" />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    ) : null
+                }
             </div>
         </div>
     );
