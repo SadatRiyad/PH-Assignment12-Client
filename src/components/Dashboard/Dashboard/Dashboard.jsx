@@ -118,7 +118,7 @@ const Dashboard = () => {
                             <CardHeader className="font-bold">Got Married</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/gotMarried" className={`${forMblClass} md:${forLgClass}`}>
-                                    <UserCircle className="h-4 w-4" /> Got Married Review
+                                    <UserCircle className="h-4 w-4" /> Give Married Review
                                 </NavLink>
                             </CardContent>
                         </Card>

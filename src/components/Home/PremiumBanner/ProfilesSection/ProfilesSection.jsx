@@ -16,8 +16,7 @@ const ProfilesSection = () => {
     const [profiles, setProfiles] = useState([]);
     const [sortOrder, setSortOrder] = useState('ascending');
     const [biodatas] = useBiodatas();
-    const profileData = biodatas.filter(biodata => biodata.race === 'African').slice(0, 6);
-    // const profileData = biodatas.filter(biodata => biodata.isPremium === true).slice(0, 6);
+    const profileData = biodatas.filter(biodata => biodata?.isPremium === true).slice(0, 6);
 
     useEffect(() => {
         const sortedProfiles = [...profileData].sort((a, b) => {

@@ -1,12 +1,19 @@
+import useAxiosSecure from "@/components/Hooks/useAxiosSecure/useAxiosSecure";
 import useMyBiodata from "@/components/Hooks/useBiodatas/useMyBiodata";
 import { Helmet } from "react-helmet-async";
 import { IoDiamond } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ViewBiodata = () => {
     const img = 'https://cdn.dribbble.com/users/1489103/screenshots/6326497/no-data-found.png';
-    const [biodata] = useMyBiodata();
+    const [biodata, refetch] = useMyBiodata();
+    const axiosSecure = useAxiosSecure();
+    const isPremium = "pending";
+    const data = { isPremium };
+
     const {
+        _id,
         name,
         age,
         biodataType,
@@ -25,13 +32,36 @@ const ViewBiodata = () => {
         profileImage,
         race,
         weight,
-        biodataID
+        biodataID,
+        isPremium: Premium
     } = biodata;
 
     const handleMakePremium = () => {
-        alert("You have successfully made your biodata to premium");
-    }
-
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to make your biodata premium?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, make it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.put(`/biodata/id/${_id}`, data)
+                    .then((res) => {
+                        console.log(res.data)
+                        if (res.data.acknowledged === true) {
+                            refetch();
+                            Swal.fire({
+                                title: "Request Sent!",
+                                text: "Your request to make the biodata premium has been sent.",
+                                icon: "success"
+                            });
+                        }
+                    })
+            }
+        });
+    };
     return (
         <div className="container px-0 mx-auto">
             <Helmet>
@@ -61,12 +91,30 @@ const ViewBiodata = () => {
                             <p className="text-lg">Your Email: <span className="text-customGulabi ml-1 font-semibold">{email}</span></p>
                             <p className="text-lg">Your Phone: <span className="text-customGulabi ml-1 font-semibold">{mobile}</span></p>
                             <div data-aos="zoom-in" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="md:flex gap-4 mt-6 w-full h-fit mb-4">
-                                <button
-                                    className="btn btn-primary bg-customGulabi text-white mb-3 p-4 flex gap-1 w-full justify-center h-fit items-center"
-                                    onClick={handleMakePremium}
-                                >
-                                    Make Biodata to Premium <IoDiamond />
-                                </button>
+                                {
+                                    Premium === "pending" ? (
+                                        <button
+                                            className="btn btn-primary bg-gray-500 text-white mb-3 p-4 flex gap-1 w-full justify-center h-fit items-center"
+                                            disabled
+                                        >
+                                            Already Requested for Premium <IoDiamond />
+                                        </button>
+                                    ) : Premium === true ? (
+                                        <button
+                                            className="btn btn-primary bg-customGulabi text-white mb-3 p-4 flex gap-1 w-full justify-center h-fit items-center"
+                                            disabled
+                                        >
+                                            Your biodata is Already Premium <IoDiamond />
+                                        </button>)
+                                        : Premium === false ? (
+                                            <button
+                                                className="btn btn-primary bg-customGulabi text-white mb-3 p-4 flex gap-1 w-full justify-center h-fit items-center"
+                                                onClick={handleMakePremium}
+                                            >
+                                                Make Biodata to Premium <IoDiamond />
+                                            </button>)
+                                            : null
+                                }
                             </div>
                         </div>
                     </div>
