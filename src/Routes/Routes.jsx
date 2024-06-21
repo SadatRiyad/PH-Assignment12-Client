@@ -21,6 +21,7 @@ import ApprovedContactRequest from '@/components/Dashboard/AdminDashboard/Approv
 import BiodataDetails from '@/components/BiodataDetails/BiodataDetails';
 import GotMarried from '@/components/Dashboard/UserDashboard/GotMarried/GotMarried';
 import CheckoutPage from '@/components/CheckoutPage/CheckoutPage';
+import WrappedCheckoutUpgrade from '@/components/CheckoutPage/CheckoutUpgrade';
 
 export const router = createBrowserRouter([
   {
@@ -60,7 +61,12 @@ export const router = createBrowserRouter([
       {
         path: "/checkout/:id",
         element: <PrivateRoute><CheckoutPage></CheckoutPage></PrivateRoute>,
-      }
+      },
+      {
+        path: "/checkout/upgrade/:id",
+        element: <PrivateRoute><WrappedCheckoutUpgrade></WrappedCheckoutUpgrade></PrivateRoute>,
+      },
+      
     ],
   },
   {

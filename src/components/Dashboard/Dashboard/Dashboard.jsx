@@ -50,10 +50,10 @@ const Dashboard = () => {
                             </CardContent>
                         </Card>
                         <Card className="hover:bg-customGulabi hover:text-white">
-                            <CardHeader className="font-bold">Approved Premium</CardHeader>
+                            <CardHeader className="font-bold">Approved Premium Biodata</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/approvedPremium" className={`${forMblClass} md:${forLgClass}`}>
-                                    <FaUserCheck className="h-4 w-4" /> Approved Premium
+                                    <FaUserCheck className="h-4 w-4" /> Check Now
                                 </NavLink>
                             </CardContent>
                         </Card>
@@ -61,7 +61,7 @@ const Dashboard = () => {
                             <CardHeader className="font-bold">Approved Contact Request</CardHeader>
                             <CardContent>
                                 <NavLink to="/dashboard/approvedContactRequest" className={`${forMblClass} md:${forLgClass}`}>
-                                    <Contact2 className="h-4 w-4" /> Approved Contact Request
+                                    <Contact2 className="h-4 w-4" /> Check Now
                                 </NavLink>
                             </CardContent>
                         </Card>

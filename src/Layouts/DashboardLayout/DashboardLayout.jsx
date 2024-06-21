@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Link, NavLink, Outlet } from "react-router-dom"
+import { Link, NavLink, Outlet, ScrollRestoration, useNavigate } from "react-router-dom"
 import logo from "../../assets/logo.png";
 import "../../index.css"
 import useAuth from "@/components/Hooks/useAuth/useAuth"
@@ -40,18 +40,31 @@ import { FaUserCheck } from "react-icons/fa6"
 import useMyBiodata from "@/components/Hooks/useBiodatas/useMyBiodata"
 import { AiFillDashboard } from "react-icons/ai"
 import useAdmin from "@/components/Hooks/useAdmin/useAdmin"
+import { useEffect, useState } from "react"
+import useAxiosSecure from "@/components/Hooks/useAxiosSecure/useAxiosSecure"
 
 export default function DashboardLayout() {
+    const axiosSecure = useAxiosSecure();
     const { user, logoutUser } = useAuth();
     const [biodata, , loading] = useMyBiodata()
+    const [isAdmin] = useAdmin();
+    const [isPremium, setIsPremium] = useState(false);
+    const navigate = useNavigate();
+    const [data, setData] = useState([]);
+    const forLgClass = "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary";
+    const forMblClass = "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground";
     const handleLogout = () => {
         logoutUser();
     };
-    const [isAdmin] = useAdmin();
 
-    const forLgClass = "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary";
-    const forMblClass = "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground";
-
+    useEffect(() => {
+        axiosSecure.get(`/users/email/${user.email}`)
+            .then((res) => {
+                setIsPremium(res.data.isPremium);
+                setData(res.data);
+            })
+    }, [axiosSecure, isPremium, user.email])
+    // console.log(data)
     const userLinks = (
         <>
             <Link to="/dashboard" className={`${forMblClass} md:${forLgClass} text-customBlue`}>
@@ -87,7 +100,7 @@ export default function DashboardLayout() {
                 <Users className="h-4 w-4" /> Manage Users
             </NavLink>
             <NavLink to="/dashboard/approvedPremium" className={`${forMblClass} md:${forLgClass}`}>
-                <FaUserCheck className="h-4 w-4" /> Approved Premium
+                <FaUserCheck className="h-4 w-4" /> Approved Premium Biodata
             </NavLink>
             <NavLink to="/dashboard/approvedContactRequest" className={`${forMblClass} md:${forLgClass}`}>
                 <Contact2 className="h-4 w-4" /> Approved Contact Request
@@ -100,6 +113,10 @@ export default function DashboardLayout() {
 
     if (loading) {
         return <div className="flex text-center items-center justify-center h-dvh w-dvw">Loading...</div>
+    }
+
+    const handleUpgrade = () => {
+        navigate(`/checkout/upgrade/${data?._id}`);
     }
 
     return (
@@ -119,24 +136,43 @@ export default function DashboardLayout() {
                         </nav>
                     </div>
                     {
-                        !isAdmin && (
-                            <div className=" p-4 fixed bottom-0 ">
+                        isAdmin === false && isPremium === false ? (
+                            <div className="p-4 fixed bottom-0">
                                 <Card x-chunk="dashboard-02-chunk-0">
                                     <CardHeader className="p-2 pt-0 md:p-4">
                                         <CardTitle className="text-lg">Upgrade to Premium</CardTitle>
                                         <CardDescription className="text-balance text-sm">
-                                            Unlock all features <br /> and get unlimited access <br /> to our support
-                                            team.
+                                            Unlock all features <br /> and get unlimited access <br /> to our support team.
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                                        <Button size="sm" className="w-full">
+                                        <Button
+                                            size="sm"
+                                            className="w-full"
+                                            onClick={handleUpgrade}
+                                        >
                                             Upgrade
                                         </Button>
                                     </CardContent>
                                 </Card>
                             </div>
-                        )
+                        ) : isAdmin === false && isPremium === true ? (
+                            <div className="p-4 fixed bottom-0 ">
+                                <Card x-chunk="dashboard-02-chunk-0">
+                                    <CardHeader className="p-2 pt-0 md:p-4">
+                                        <CardTitle className="text-lg">Congratulations!</CardTitle>
+                                        <CardDescription className="text-balance text-sm">
+                                            You are already <br /> a premium member.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                                        <Button size="sm" className="w-full">
+                                            <Link to="/contactUs/#support">Contact Us</Link>
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        ) : null
                     }
                 </div>
             </div>
@@ -166,22 +202,47 @@ export default function DashboardLayout() {
                                     !isAdmin ? userLinks : adminLinks
                                 }
                             </nav>
-                            <div className="mt-auto">
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle id="prem">Upgrade to Premium</CardTitle>
-                                        <CardDescription className="text-xs">
-                                            Unlock all features and get unlimited access to our
-                                            support team.
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <Button size="sm" className="w-full">
-                                            Upgrade
-                                        </Button>
-                                    </CardContent>
-                                </Card>
-                            </div>
+                            {
+                                isAdmin === false && isPremium === false ? (
+                                    <div className="mt-auto">
+                                        <Card>
+                                            <CardHeader>
+                                                <CardTitle className="border-0 border-b-0">Upgrade to Premium</CardTitle>
+                                                <CardDescription className="text-xs">
+                                                    Unlock all features and get unlimited access to our
+                                                    support team.
+                                                </CardDescription>
+                                            </CardHeader>
+                                            <CardContent>
+
+                                                <Button
+                                                    size="sm"
+                                                    className="w-full"
+                                                    onClick={handleUpgrade}
+                                                >
+                                                    Upgrade
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    </div>
+                                ) : isAdmin === false && isPremium === true ? (
+                                    <div className="mt-auto">
+                                        <Card>
+                                            <CardHeader>
+                                                <Card className="border-0 border-b-0">Congratulations!</Card>
+                                                <CardDescription className="text-xs">
+                                                    You are already a premium member.
+                                                </CardDescription>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <Button size="sm" className="w-full">
+                                                    <Link to="/contactUs">Contact Us</Link>
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    </div>
+                                ) : null
+                            }
                         </SheetContent>
                     </Sheet>
                     <div className="w-full flex-1">
@@ -211,13 +272,14 @@ export default function DashboardLayout() {
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem><Link to="/">Home</Link></DropdownMenuItem>
-                            <DropdownMenuItem><Link to="/contactUs">Contact Us</Link></DropdownMenuItem>
+                            <DropdownMenuItem><Link to="/contactUs/#support">Contact Us</Link></DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </header>
                 <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                    <ScrollRestoration />
                     <Outlet></Outlet>
                 </main>
             </div>

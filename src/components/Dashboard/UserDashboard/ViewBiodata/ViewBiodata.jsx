@@ -74,22 +74,22 @@ const ViewBiodata = () => {
                         <img data-aos="fade-right" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" src={profileImage} alt={name} className="min-h-60 max-h-screen w-full lg:w-2/4 rounded-lg lg:mr-8 border-4 border-customGulabi" />
                         <div data-aos="fade-left" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="lg:ml-5 mt-5 lg:mt-5">
                             <h2 className="text-3xl md:text-5xl font-bold mb-2 text-customGulabi">{name}</h2>
-                            <p className="text-lg">Your Age: <span className="text-customGulabi ml-1 font-semibold">{age}</span></p>
-                            <p className="text-lg">Your Gender: <span className="text-customGulabi ml-1 font-semibold">{biodataType}</span></p>
-                            <p className="text-lg">Your Date of Birth: <span className="text-customGulabi ml-1 font-semibold">{dob}</span></p>
-                            <p className="text-lg">Your Occupation: <span className="text-customGulabi ml-1 font-semibold">{occupation}</span></p>
-                            <p className="text-lg">Your Height: <span className="text-customGulabi ml-1 font-semibold">{height}</span></p>
-                            <p className="text-lg">Your Weight: <span className="text-customGulabi ml-1 font-semibold">{weight}</span></p>
-                            <p className="text-lg">Your Race: <span className="text-customGulabi ml-1 font-semibold">{race}</span></p>
-                            <p className="text-lg">Your Permanent Division: <span className="text-customGulabi ml-1 font-semibold">{permanentDivision}</span></p>
-                            <p className="text-lg">Your Present Division: <span className="text-customGulabi ml-1 font-semibold">{presentDivision}</span></p>
-                            <p className="text-lg">Your Father&apos;s Name: <span className="text-customGulabi ml-1 font-semibold">{fathersName}</span></p>
-                            <p className="text-lg">Your Mother&apos;s Name: <span className="text-customGulabi ml-1 font-semibold">{mothersName}</span></p>
-                            <p className="text-lg">Expected Partner Age: <span className="text-customGulabi ml-1 font-semibold">{expectedPartnerAge}</span></p>
-                            <p className="text-lg">Expected Partner Height: <span className="text-customGulabi ml-1 font-semibold">{expectedPartnerHeight}</span></p>
-                            <p className="text-lg">Expected Partner Weight: <span className="text-customGulabi ml-1 font-semibold">{expectedPartnerWeight}</span></p>
-                            <p className="text-lg">Your Email: <span className="text-customGulabi ml-1 font-semibold">{email}</span></p>
-                            <p className="text-lg">Your Phone: <span className="text-customGulabi ml-1 font-semibold">{mobile}</span></p>
+                            <p className="text-base md:text-lg">Your Age: <span className="text-customGulabi ml-1 font-semibold">{age}</span></p>
+                            <p className="text-base md:text-lg">Your Gender: <span className="text-customGulabi ml-1 font-semibold">{biodataType}</span></p>
+                            <p className="text-base md:text-lg">Your Date of Birth: <span className="text-customGulabi ml-1 font-semibold">{dob}</span></p>
+                            <p className="text-base md:text-lg">Your Occupation: <span className="text-customGulabi ml-1 font-semibold">{occupation}</span></p>
+                            <p className="text-base md:text-lg">Your Height: <span className="text-customGulabi ml-1 font-semibold">{height}</span></p>
+                            <p className="text-base md:text-lg">Your Weight: <span className="text-customGulabi ml-1 font-semibold">{weight}</span></p>
+                            <p className="text-base md:text-lg">Your Race: <span className="text-customGulabi ml-1 font-semibold">{race}</span></p>
+                            <p className="text-base md:text-lg">Your Permanent Division: <span className="text-customGulabi ml-1 font-semibold">{permanentDivision}</span></p>
+                            <p className="text-base md:text-lg">Your Present Division: <span className="text-customGulabi ml-1 font-semibold">{presentDivision}</span></p>
+                            <p className="text-base md:text-lg">Your Father&apos;s Name: <span className="text-customGulabi ml-1 font-semibold">{fathersName}</span></p>
+                            <p className="text-base md:text-lg">Your Mother&apos;s Name: <span className="text-customGulabi ml-1 font-semibold">{mothersName}</span></p>
+                            <p className="text-base md:text-lg">Expected Partner Age: <span className="text-customGulabi ml-1 font-semibold">{expectedPartnerAge}</span></p>
+                            <p className="text-base md:text-lg">Expected Partner Height: <span className="text-customGulabi ml-1 font-semibold">{expectedPartnerHeight}</span></p>
+                            <p className="text-base md:text-lg">Expected Partner Weight: <span className="text-customGulabi ml-1 font-semibold">{expectedPartnerWeight}</span></p>
+                            <p className="text-base md:text-lg">Your Email: <span className="text-customGulabi ml-1 font-semibold">{email}</span></p>
+                            <p className="text-base md:text-lg">Your Phone: <span className="text-customGulabi ml-1 font-semibold">{mobile}</span></p>
                             <div data-aos="zoom-in" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" data-aos-delay="0" className="md:flex gap-4 mt-6 w-full h-fit mb-4">
                                 {
                                     Premium === "pending" ? (

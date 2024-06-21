@@ -63,7 +63,7 @@ const ContactUs = () => {
             <Helmet>
                 <title>Contact Us | BB-Matrimony</title>
             </Helmet>
-            <div data-aos="fade-up" data-aos-duration="700" data-aos-anchor-placement="top-bottom" data-aos-delay="50" className="container mx-auto px-4 pb-0">
+            <div data-aos="zoom-in" data-aos-duration="700" data-aos-anchor-placement="top-bottom" data-aos-delay="50" className="container mx-auto px-4 pb-0">
                 <img src={contactImg} alt="Contact" className="w-full h-auto rounded-t-xl mb-0 md:-mt-48" />
             </div>
             <div className="container mx-auto px-4 pt-8 pb-6">
@@ -88,7 +88,7 @@ const ContactUs = () => {
                         </span>
                     </p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-4 px-8 py-16 bg-customGulabi rounded-xl">
+                <div id="support" className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-4 px-8 py-16 bg-customGulabi rounded-xl">
                     <div data-aos="zoom-in" data-aos-duration="700" data-aos-anchor-placement="top-bottom" data-aos-delay="300" className='text-white'>
                         <h2 className="text-3xl font-semibold mb-8">Contact Information</h2>
                         <ul className="space-y-2">

@@ -108,9 +108,6 @@ const BiodataDetails = () => {
     };
 
     const handleRequestContactInfo = () => {
-        // Redirect to checkout page
-        // window.location.href = `/checkout/${biodataID}`;
-        // using Link
         navigate(`/checkout/${biodataID}`);
     };
 

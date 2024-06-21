@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
-const CheckoutPage = () => {
+const CheckoutUpgrade = () => {
     const [loading, setLoading] = useState(false);
     const stripe = useStripe();
     const elements = useElements();
@@ -26,13 +26,9 @@ const CheckoutPage = () => {
     const [formData, setFormData] = useState({
         biodataId: biodataID || "anonymous",
         selfEmail: user?.email || "anonymous",
+        isPremium: true ,
     });
-    const datas ={
-        biodataId: formData.biodataId,
-        selfEmail: formData.selfEmail,
-        status: "pending",
-        amountPaid: 5,
-    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -55,10 +51,14 @@ const CheckoutPage = () => {
                 console.log(response.status); // Check the response status
 
                 if (response.data.success) {
-                    await axiosSecure.post("/contact-requests", datas);
+                    await axiosSecure.patch(`/users/premium/${biodataID}`, {
+                        biodataId: formData.biodataId,
+                        selfEmail: formData.selfEmail,
+                        status: "pending",
+                    });
                     Swal.fire({
                         title: "Congratulations!",
-                        text: `Your Payment for Contact Request: ${biodataID} is Successful.`,
+                        text: `Your Payment for Premium is Successful.`,
                         icon: "success",
                         showCancelButton: false,
                         confirmButtonColor: "#3085d6",
@@ -66,13 +66,13 @@ const CheckoutPage = () => {
                         confirmButtonText: "Okay"
                       }).then((result) => {
                         if (result.isConfirmed) {
-                            navigate("/dashboard/myContactRequest");
+                            navigate("/dashboard");
                         }
                       });
                     
                 }
             } catch (error) {
-                console.error("Error submitting form:", error);
+                console.error("Error updating:", error);
             } finally {
                 setLoading(false);
             }
@@ -80,7 +80,7 @@ const CheckoutPage = () => {
     };
 
     if (loading) {
-        <div className="flex items-center justify-center h-96">Loading...   </div>
+        <div className="flex items-center justify-center h-96">Loading...</div>
     }
 
     return (
@@ -90,7 +90,7 @@ const CheckoutPage = () => {
             </Helmet>
             <Card className="md:p-1">
                 <CardHeader>
-                    <CardTitle className="text-4xl text-center mb-4 md:mb-6">Checkout Now</CardTitle>
+                    <CardTitle className="text-4xl text-center mb-4 md:mb-6">Checkout for Premium!</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
@@ -155,10 +155,10 @@ const CheckoutPage = () => {
     );
 };
 
-const WrappedCheckoutPage = () => (
+const WrappedCheckoutUpgrade = () => (
     <Elements stripe={stripePromise}>
-        <CheckoutPage />
+        <CheckoutUpgrade />
     </Elements>
 );
 
-export default WrappedCheckoutPage;
+export default WrappedCheckoutUpgrade;
