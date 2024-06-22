@@ -95,10 +95,15 @@ const ManageUsers = () => {
                     <title>Manage Users | BB-Matrimony</title>
                 </Helmet>
                 <CardHeader>
-                    <CardTitle>Manage Users</CardTitle>
-                    <CardDescription>
-                        Admin can manage users, make them admin or premium.
-                    </CardDescription>
+                    <div className="justify-between flex mb-0 items-center">
+                        <CardTitle>Manage Users</CardTitle>
+                        <p className="font-medium text-lg">Total Users: {users?.length}</p>
+                    </div>
+                    <div className="pb-2">
+                        <CardDescription>
+                            Admin can manage users, make them admin or premium.
+                        </CardDescription>
+                    </div>
                     <input
                         type="text"
                         value={searchTerm}
