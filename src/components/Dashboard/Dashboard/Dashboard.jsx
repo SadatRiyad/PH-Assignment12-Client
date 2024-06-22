@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { NavLink } from 'react-router-dom';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { View, Edit, Contact, Heart, LogOutIcon, LayoutDashboardIcon, Users, Contact2, UserCircle } from 'lucide-react';
+import { View, Edit, Contact, Heart, LogOutIcon, LayoutDashboardIcon, Users, Contact2, UserCircle, Table } from 'lucide-react';
 import { FaUserCheck } from 'react-icons/fa';
 import useMyBiodata from '@/components/Hooks/useBiodatas/useMyBiodata';
 import useAuth from '@/components/Hooks/useAuth/useAuth';
@@ -25,7 +25,7 @@ const Dashboard = () => {
             </Helmet>
             <div className="text-center mb-8">
                 <h1 className='text-2xl mb-1 font-bold'>Hello, <span className='text-customGulabi'>{user?.displayName}</span></h1>
-                <h2 className="text-2xl md:text-4xl font-bold mb-3">{isAdmin ? 'Welcome to Admin Dashboard' : 'Welcome to Your Dashboard'}</h2>
+                <h2 className="text-2xl md:text-4xl font-bold mb-3">{isAdmin ? 'Welcome to Dashboard' : 'Welcome to Dashboard'}</h2>
                 <p className="text-sm md:text-base">
                     {isAdmin ? 'Manage the platform, users, and content from here.' : 'Here you can manage your profile, view matches, and track your activities.'}
                 </p>
@@ -62,6 +62,14 @@ const Dashboard = () => {
                             <CardContent>
                                 <NavLink to="/dashboard/approvedContactRequest" className={`${forMblClass} md:${forLgClass}`}>
                                     <Contact2 className="h-4 w-4" /> Check Now
+                                </NavLink>
+                            </CardContent>
+                        </Card>
+                        <Card className="hover:bg-customGulabi hover:text-white">
+                            <CardHeader className="font-bold">Success Story</CardHeader>
+                            <CardContent>
+                                <NavLink to="/dashboard/successStory" className={`${forMblClass} md:${forLgClass}`}>
+                                    <Table className="h-4 w-4" /> Success Story
                                 </NavLink>
                             </CardContent>
                         </Card>

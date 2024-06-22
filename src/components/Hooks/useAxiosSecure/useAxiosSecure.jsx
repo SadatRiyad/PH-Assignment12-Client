@@ -5,6 +5,9 @@ import useAuth from "../useAuth/useAuth";
 
 const axiosSecure = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
+    headers: {
+        Authorization: `Bearer ${document.cookie.split("=")[1]}`,
+    },
     withCredentials: true,
 });
 

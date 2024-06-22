@@ -25,7 +25,6 @@ export default function GotMarried() {
         submittedUserName: `${user.displayName}`,
         submittedUserEmail: `${user.email}`,
     });
-    console.log(user)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({

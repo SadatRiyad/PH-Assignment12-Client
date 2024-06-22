@@ -8,6 +8,7 @@ import {
     LogOutIcon,
     Menu,
     Search,
+    Table,
     UserCircle,
     Users,
     View,
@@ -104,6 +105,9 @@ export default function DashboardLayout() {
             </NavLink>
             <NavLink to="/dashboard/approvedContactRequest" className={`${forMblClass} md:${forLgClass}`}>
                 <Contact2 className="h-4 w-4" /> Approved Contact Request
+            </NavLink>
+            <NavLink to="/dashboard/successStory" className={`${forMblClass} md:${forLgClass}`}>
+                <Table className="h-4 w-4" /> Success Story
             </NavLink>
             <button onClick={handleLogout} className={`${forMblClass} md:${forLgClass}`}>
                 <LogOutIcon className="h-4 w-4" /> Logout

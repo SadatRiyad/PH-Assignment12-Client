@@ -11,6 +11,7 @@ import useAxiosPublic from "@/components/Hooks/useAxiosPublic/useAxiosPublix";
 
 const SuccessStoryList = () => {
     const axiosPublic = useAxiosPublic();
+
     // get the marriges data with tanstack query 
     const { data: reviews = [] } = useQuery({
         queryKey: ['marriages'],
@@ -20,8 +21,8 @@ const SuccessStoryList = () => {
         }
     })
 
-    // Sort the reviews by marriage date in descending order
-    const sortedReviews = [...reviews].sort((a, b) => new Date(b.marriageDate) - new Date(a.marriageDate));
+    // Sort the reviews by marriage date in descending order and limit 6
+    const sortedReviews = [...reviews].sort((a, b) => new Date(b.marriageDate) - new Date(a.marriageDate)).slice(0, 6);
 
     return (
         <div className="pt-12  bg-customGulabi text-center text-balance border-b-8" id="moreCrafts">
