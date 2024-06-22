@@ -25,10 +25,13 @@ const CheckoutPage = () => {
     // eslint-disable-next-line no-unused-vars
     const [formData, setFormData] = useState({
         biodataId: biodataID || "anonymous",
+        selfName: user?.displayName || "anonymous",
         selfEmail: user?.email || "anonymous",
     });
+    // console.log(formData)
     const datas ={
         biodataId: formData.biodataId,
+        selfName: formData.selfName,
         selfEmail: formData.selfEmail,
         status: "pending",
         amountPaid: 5,
@@ -52,7 +55,7 @@ const CheckoutPage = () => {
                     amount: 500, // Amount in cents (5 USD)
                     paymentMethodId: paymentMethod.id,
                 });
-                console.log(response.status); // Check the response status
+                // console.log(response.status); // Check the response status
 
                 if (response.data.success) {
                     await axiosSecure.post("/contact-requests", datas);
