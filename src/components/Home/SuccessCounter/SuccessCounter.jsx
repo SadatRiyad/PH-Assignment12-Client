@@ -1,34 +1,20 @@
 import useAxiosPublic from '@/components/Hooks/useAxiosPublic/useAxiosPublix';
-import { useQuery } from '@tanstack/react-query';
+import useCounter from '@/components/Hooks/useCounter/useCounter';
 import { useEffect, useState } from 'react';
 
 const SuccessCounter = () => {
   const axiosPublic = useAxiosPublic();
-  const [counters, setCounters] = useState({
-    totalBiodatas: 0,
-    girlsBiodatas: 0,
-    boysBiodatas: 0,
-    marriagesCompleted: 0,
-  });
-
-  // using tanstack 
-  const { data: counter = [], refetch, isPending: loading } = useQuery({
-    queryKey: ['counter'],
-    queryFn: async () => {
-      const response = await axiosPublic("/counters");
-      setCounters(response.data);
-      refetch();
-      return [counter, refetch, loading];
-    },
-  });
+  const [counter, refetch, loading] = useCounter();
+  const [counters, setCounters] = useState(counter);
 
   // using useEffect
   useEffect(() => {
     axiosPublic("/counters")
       .then((response) => {
         setCounters(response.data);
+        refetch();
       })
-  }, [axiosPublic]);
+  }, [axiosPublic, refetch]);
 
   if (loading) {
       <section className="bg-customBlue text-white py-12 pb-20">

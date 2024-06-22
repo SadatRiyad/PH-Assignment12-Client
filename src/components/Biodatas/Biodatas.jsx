@@ -4,17 +4,15 @@ import useBiodatas from '../Hooks/useBiodatas/useBiodatas';
 import ProfileCard from '../Home/PremiumBanner/ProfileCard/ProfileCard';
 import { Button } from '../ui/button';
 import { Search } from 'lucide-react';
-import "../../index.css"
+import "../../index.css";
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from "@/components/ui/pagination"
-
+} from "@/components/ui/pagination";
 
 const Biodatas = () => {
     const [biodatas, , loading] = useBiodatas();
@@ -22,31 +20,38 @@ const Biodatas = () => {
     const [ageRange1, setAgeRange1] = useState([18, 99]);
     const [selectedType, setSelectedType] = useState('');
     const [selectedDivision, setSelectedDivision] = useState('');
-    const [filterBiodatas, setFilterBiodatas] = useState([]);
+    const [filteredBiodatas, setFilteredBiodatas] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const resultsPerPage = 9;
+
 
     useEffect(() => {
-        const filteredBiodatas = biodatas.filter(biodata => {
+        // Filtering biodatas based on criteria
+        const filterBiodatas = biodatas.filter(biodata => {
             return (
                 (selectedType ? biodata.biodataType === selectedType : true) &&
                 (selectedDivision ? biodata.presentDivision === selectedDivision : true) &&
                 (biodata.age >= ageRange[0] && biodata.age <= ageRange[1] || biodata.age >= ageRange && biodata.age <= ageRange1)
             );
         });
-        setFilterBiodatas(filteredBiodatas);
+        setFilteredBiodatas(filterBiodatas);
     }, [ageRange, ageRange1, biodatas, selectedDivision, selectedType])
 
-    if (loading) {
-        return <div className="flex text-center items-center justify-center h-dvh w-dvw">Loading...</div>
-    }
+    // Paginate filtered biodatas
+    const indexOfLastResult = currentPage * resultsPerPage;
+    const indexOfFirstResult = indexOfLastResult - resultsPerPage;
+    const currentBiodatas = filteredBiodatas.slice(indexOfFirstResult, indexOfLastResult);
 
-    // search with biodataID
+    // Handle search
     const handleSearch = (e) => {
-        e.preventDefault();
         const search = e.target.value;
         const SearchedBiodatas = biodatas.filter(biodata => biodata.biodataID.toLowerCase().includes(search.toLowerCase()));
-        setFilterBiodatas(SearchedBiodatas);
+        setFilteredBiodatas(SearchedBiodatas);
+        setCurrentPage(1); // Reset to first page
     }
 
+    // Handle filter changes
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         if (name === 'ageRange') {
@@ -57,10 +62,19 @@ const Biodatas = () => {
         } else if (name === 'division') {
             setSelectedDivision(value);
         }
+        setCurrentPage(1); // Reset to first page
     };
 
+    // Handle page change
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
-    // console.log(filterBiodatas);
+    if (loading) {
+        return <div className="flex text-center items-center justify-center h-dvh w-dvw">Loading...</div>;
+    }
+
+    const totalPages = Math.ceil(filteredBiodatas.length / resultsPerPage);
 
     return (
         <div className="grid container mx-auto px-4 min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -73,7 +87,6 @@ const Biodatas = () => {
                 <div className="mb-4 border-2 border-customGulabi p-2 px-4 bg-slate-200">
                     <div className='justify-between flex items-center mb-1'>
                         <label className="block mb-2 font-medium">Age Range: {ageRange[0]} {ageRange1[1] ? '-' : ""} {ageRange[1]}</label>
-                        {/* reset */}
                         <Button
                             onClick={() => {
                                 setAgeRange([18, 99]);
@@ -110,7 +123,7 @@ const Biodatas = () => {
                     <select name="division" value={selectedDivision} onChange={handleFilterChange} className="w-full border-2 border-customGulabi p-2 rounded-full">
                         <option value="">All</option>
                         <option value="Dhaka">Dhaka</option>
-                        <option value="Chattagram">Chattagram</option>
+                        <option value="Chattogram">Chattogram</option>
                         <option value="Rangpur">Rangpur</option>
                         <option value="Barisal">Barisal</option>
                         <option value="Khulna">Khulna</option>
@@ -120,9 +133,10 @@ const Biodatas = () => {
                 </div>
             </div>
             <div className="w-full h-fit pt-6 md:pl-5 md:border-l-4 min-h-dvh">
-                <div className='grid w-full grid-cols-1 md:grid-cols-2 text-center md:text-left'>
-                    <div className='w-full'>
-                        <h2 className="text-3xl font-bold mb-2 md:mb-5">Biodatas Found: <span className='text-customGulabi'>{filterBiodatas.length}</span></h2>
+                <div className='grid w-full grid-cols-1 md:grid-cols-2 text-center md:text-left items-center'>
+                    <div className='w-full flex justify-between'>
+                        <h2 className="text-2xl font-bold mb-2 md:mb-5">Total Biodatas: <span className='text-customGulabi'>{biodatas.length}</span></h2>
+                        <h2 className="text-2xl font-bold mb-2 md:mb-5 ml-4">Biodatas Found: <span className='text-customGulabi'>{filteredBiodatas.length}</span></h2>
                     </div>
                     <div className="w-full flex-1">
                         <form>
@@ -139,31 +153,40 @@ const Biodatas = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    {/* {filteredBiodatas.slice(0, 20).map(profile => ( */}
-                    {filterBiodatas.map(profile => (
+                    {currentBiodatas.map(profile => (
                         <ProfileCard key={profile._id} profile={profile} />
                     ))}
                 </div>
-                {
-                    filterBiodatas.length > 20 ? (
-                        <Pagination className="my-8 bg-customBlue w-fit text-white rounded-lg">
-                            <PaginationContent>
-                                <PaginationItem>
-                                    <PaginationPrevious href="#" />
+                {totalPages > 1 && (
+                    <Pagination className="my-8 w-fit text-white rounded-lg">
+                        <PaginationContent>
+                            <PaginationItem>
+                                <PaginationPrevious
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    className="bg-customBlue border border-customBlue cursor-pointer"
+                                />
+                            </PaginationItem>
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <PaginationItem key={index}>
+                                    <PaginationLink
+                                        onClick={() => handlePageChange(index + 1)}
+                                        className={currentPage === index + 1 ? 'pagination-link active border border-customBlue cursor-not-allowed' : 'pagination-link border border-customBlue bg-customBlue text-white cursor-pointer'}
+                                    >
+                                        {index + 1}
+                                    </PaginationLink>
                                 </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationLink href="#">1</PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationEllipsis />
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationNext href="#" />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
-                    ) : null
-                }
+                            ))}
+                            <PaginationItem>
+                                <PaginationNext
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className="bg-customBlue border border-customBlue cursor-pointer"
+                                />
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                )}
             </div>
         </div>
     );

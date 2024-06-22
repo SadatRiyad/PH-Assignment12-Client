@@ -169,3 +169,24 @@ body {
 .custom-range:focus::-moz-range-track {
   background: #ccc; /* Track color when focused */
 }
+
+
+.pagination-link.active {
+  background-color: #D32F2F !important; /* Custom color for active page */
+  color: white !important;
+  padding: 8px 12px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination-link:hover {
+  background-color: #f0f0f0;
+  color: #D32F2F;
+}
