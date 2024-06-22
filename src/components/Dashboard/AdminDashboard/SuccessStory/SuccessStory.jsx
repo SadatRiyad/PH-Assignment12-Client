@@ -46,7 +46,7 @@ const SuccessStory = () => {
     const handleViewStory = (id) => {
         // find successStoryText with id
         const story = reviews.find((story) => story._id === id);
-        console.log(story)
+        // console.log(story)
         Swal.fire({
             imageUrl: story?.coupleImage,
             title: `Success Story for ${story?.selfBiodataId} and ${story?.partnerBiodataId}, MarriageDate: ${story?.marriageDate} and given Review: ${story?.reviewStar}/5 Star.`,

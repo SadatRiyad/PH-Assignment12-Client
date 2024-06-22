@@ -64,7 +64,7 @@ const ApprovedContactRequests = () => {
   if (loading) {
     <p>Loading...</p>;
   }
-  console.log(request)
+  // console.log(request)
   return (
     <>
       <Card>

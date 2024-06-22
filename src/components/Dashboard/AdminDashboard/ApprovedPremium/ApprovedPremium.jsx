@@ -38,14 +38,14 @@ const ApprovedPremium = () => {
         queryFn: async () => {
             const res = await axiosSecure.get("/premium-requests");
             setPremiumRequests(res.data);
-            console.log(res.data)
+            // console.log(res.data)
             return [Requests, refetch, loading]
         }
     });
 
 
     const handleMakePremium = (_id) => {
-        console.log(_id)
+        // console.log(_id)
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to make this biodata premium?",
@@ -58,7 +58,7 @@ const ApprovedPremium = () => {
             if (result.isConfirmed) {
                 axiosSecure.patch(`/biodata/${_id}/make-premium`,)
                     .then((res) => {
-                        console.log(res.data)
+                        // console.log(res.data)
                         if (res.data.acknowledged === true) {
                             refetch();
                             Swal.fire({
@@ -83,7 +83,7 @@ const ApprovedPremium = () => {
     if (loading) {
         <div>Loading...</div>;
     }
-    console.log(premiumRequests)
+    // console.log(premiumRequests)
     return (
         <>
             <Card>

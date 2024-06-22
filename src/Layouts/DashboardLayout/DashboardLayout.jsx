@@ -7,7 +7,6 @@ import {
     LayoutDashboardIcon,
     LogOutIcon,
     Menu,
-    Search,
     Table,
     UserCircle,
     Users,
@@ -249,24 +248,24 @@ export default function DashboardLayout() {
                             }
                         </SheetContent>
                     </Sheet>
-                    <div className="w-full flex-1">
+                    <div className="w-full flex-1 ">
                         <form>
                             <div className="relative">
-                                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                                {/* <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /> */}
                                 <Input
                                     type="search"
                                     placeholder="Search products..."
-                                    className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+                                    className="w-full hidden appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
                                 />
                             </div>
                         </form>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="secondary" size="icon" className="rounded-full">
-                                <CircleUser className="h-5 w-5" />
+                            <Button variant="secondary" size="icon" className="rounded-full bg-customBlue">
+                                <CircleUser className="h-5 w-5 text-white" />
                                 <span className="sr-only">Toggle user menu</span>
-                                <Avatar className="w-15 rounded-full p-[2px] border border-customBlue">
+                                <Avatar className="w-15 rounded-full p-[2px]">
                                     <AvatarImage className="rounded-full" src={user?.photoURL} />
                                     <AvatarFallback></AvatarFallback>
                                 </Avatar>

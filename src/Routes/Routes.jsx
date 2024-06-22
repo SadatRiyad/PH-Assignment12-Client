@@ -23,6 +23,7 @@ import GotMarried from '@/components/Dashboard/UserDashboard/GotMarried/GotMarri
 import CheckoutPage from '@/components/CheckoutPage/CheckoutPage';
 import WrappedCheckoutUpgrade from '@/components/CheckoutPage/CheckoutUpgrade';
 import SuccessStory from '@/components/Dashboard/AdminDashboard/SuccessStory/SuccessStory';
+import AdminRoute from './AdminRoute/AdminRoute';
 
 export const router = createBrowserRouter([
   {
@@ -108,23 +109,23 @@ export const router = createBrowserRouter([
       // for admin
       {
         path: "adminDashboard",
-        element: <PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>,
+        element: <AdminRoute><PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute></AdminRoute>,
       },
       {
         path: "manageUsers",
-        element: <PrivateRoute><ManageUsers></ManageUsers></PrivateRoute>,
+        element: <AdminRoute><PrivateRoute><ManageUsers></ManageUsers></PrivateRoute></AdminRoute>,
       },
       {
         path: "approvedPremium",
-        element: <PrivateRoute><ApprovedPremium></ApprovedPremium></PrivateRoute>,
+        element: <AdminRoute><PrivateRoute><ApprovedPremium></ApprovedPremium></PrivateRoute></AdminRoute>,
       },
       {
         path: "approvedContactRequest",
-        element: <PrivateRoute><ApprovedContactRequest></ApprovedContactRequest></PrivateRoute>,
+        element: <AdminRoute><PrivateRoute><ApprovedContactRequest></ApprovedContactRequest></PrivateRoute></AdminRoute>,
       },
       {
         path: "successStory",
-        element: <PrivateRoute><SuccessStory></SuccessStory></PrivateRoute>,
+        element: <AdminRoute><PrivateRoute><SuccessStory></SuccessStory></PrivateRoute></AdminRoute>,
       },
 
     ]
