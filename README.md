@@ -42,13 +42,13 @@ This is the client-side code for the BB Matrimony platform, an online matrimonia
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/programming-hero-web-course1/b9a12-client-side-SadatRiyad
+   git clone https://github.com/SadatRiyad/PH-Assignment12-Client
    ```
 
 2. Navigate to the client directory:
 
    ```bash
-   cd b9a12-client-side-SadatRiyad
+   cd PH-Assignment12-Client
    ```
 
 3. Install dependencies:
